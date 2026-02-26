@@ -7,155 +7,127 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* セブンイレブンカラー＆カテゴリーカラー */
-            --seven-red: #E60012;
-            --seven-green: #00803E;
-            --seven-orange: #F39200;
-            --color-sale: #e83e8c;      /* セール（ピンク） */
-            --color-campaign: #17a2b8;  /* キャンペーン（ブルー） */
-            --color-other: #6c757d;     /* その他（グレー） */
-            
-            --bg-color: #f8f9fa;
-            --text-primary: #333333;
-            --text-secondary: #666666;
+            /* モダンなiOSライクなカラーパレット */
+            --bg-color: #f2f2f7; /* iOSの背景色に近いグレー */
             --card-bg: #ffffff;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
-            --radius-md: 12px;
-            --radius-sm: 8px;
+            --text-main: #1c1c1e;
+            --text-sub: #8e8e93;
+            --border-color: rgba(0, 0, 0, 0.05);
+            
+            /* カテゴリーカラー（彩度を高めに） */
+            --c-puraichi: #ff3b30; /* Red */
+            --c-app: #ff9500;      /* Orange */
+            --c-sale: #ff2d55;     /* Pink */
+            --c-other: #007aff;    /* Blue */
+            
+            --shadow-card: 0 8px 24px rgba(0,0,0,0.04);
+            --shadow-hover: 0 16px 32px rgba(0,0,0,0.08);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Hiragino Sans", sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 0;
-            padding-bottom: 40px;
+            color: var(--text-main);
+            margin: 0; padding: 0; padding-bottom: 60px;
         }
 
-        /* ヘッダーエリア */
+        /* ヘッダー：すりガラス効果（Glassmorphism） */
         .app-header {
-            background: var(--card-bg);
-            padding: 20px 10px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px 15px 15px;
+            border-bottom: 1px solid var(--border-color);
         }
         .app-title {
-            margin: 0 0 15px 0;
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: 0.5px;
+            margin: 0 0 16px 0; text-align: center;
+            font-size: 22px; font-weight: 800; letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #00803E, #F39200, #E60012);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .app-title span {
-            color: var(--seven-green);
-            border-bottom: 4px solid var(--seven-red);
-            padding-bottom: 4px;
-        }
-        .app-title i { margin-right: 10px; color: var(--seven-orange); }
 
-        /* タグフィルター */
+        /* フィルタータブ（ピル型デザイン） */
         .filter-container {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-            max-width: 600px;
-            margin: 0 auto;
+            display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 600px; margin: 0 auto;
         }
         .filter-btn {
-            border: none;
-            background: #eee;
-            color: var(--text-secondary);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 13px;
+            border: none; background: #e5e5ea; color: var(--text-sub);
+            padding: 10px 18px; border-radius: 100px;
+            font-weight: 700; font-size: 13px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; align-items: center;
         }
-        .filter-btn i { margin-right: 5px; }
+        .filter-btn i { margin-right: 6px; font-size: 14px; }
         
-        /* フィルターのアクティブ状態のカラー */
-        .filter-btn.active { background: var(--seven-green); color: white; box-shadow: 0 4px 10px rgba(0, 128, 62, 0.3); }
-        .filter-btn.puraichi.active { background: var(--seven-red); box-shadow: 0 4px 10px rgba(230, 0, 18, 0.3); }
-        .filter-btn.app.active { background: var(--seven-orange); box-shadow: 0 4px 10px rgba(243, 146, 0, 0.3); }
-        .filter-btn.sale.active { background: var(--color-sale); box-shadow: 0 4px 10px rgba(232, 62, 140, 0.3); }
-        .filter-btn.campaign.active { background: var(--color-campaign); box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3); }
-        .filter-btn.other.active { background: var(--color-other); box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3); }
+        /* アクティブ時の色 */
+        .filter-btn.active { background: #1c1c1e; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: scale(1.05); }
+        .filter-btn.puraichi.active { background: var(--c-puraichi); box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3); }
+        .filter-btn.app.active { background: var(--c-app); box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3); }
+        .filter-btn.sale.active { background: var(--c-sale); box-shadow: 0 4px 12px rgba(255, 45, 85, 0.3); }
+        .filter-btn.other.active { background: var(--c-other); box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3); }
 
         /* メインコンテンツ */
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 15px; }
-        .campaign-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
 
-        /* カードデザイン */
+        /* カードデザイン（フローティング） */
         .card {
-            background: var(--card-bg);
-            border-radius: var(--radius-md);
+            background: var(--card-bg); border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; position: relative;
+            border: 1px solid rgba(255,255,255,0.8);
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            border: 1px solid rgba(0,0,0,0.05);
         }
-        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-        
-        /* カード上部のラインカラー */
-        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--seven-green); }
-        .card.puraichi::before { background: var(--seven-red); }
-        .card.app::before { background: var(--seven-orange); }
-        .card.sale::before { background: var(--color-sale); }
-        .card.campaign::before { background: var(--color-campaign); }
-        .card.other::before { background: var(--color-other); }
+        .card:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--shadow-hover); }
 
-        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-content { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; }
         
-        /* カテゴリーバッジ */
+        /* エレガントなバッジ */
         .badge {
-            display: inline-flex; align-items: center; padding: 5px 12px;
-            border-radius: 20px; font-size: 11px; font-weight: bold; color: white;
-            margin-bottom: 12px; align-self: flex-start;
+            display: inline-flex; align-items: center; padding: 6px 14px;
+            border-radius: 100px; font-size: 12px; font-weight: 800; color: white;
+            margin-bottom: 16px; align-self: flex-start;
+            letter-spacing: 0.5px;
         }
-        .badge i { margin-right: 5px; }
-        .badge.puraichi { background-color: var(--seven-red); }
-        .badge.app { background-color: var(--seven-orange); }
-        .badge.sale { background-color: var(--color-sale); }
-        .badge.campaign { background-color: var(--color-campaign); }
-        .badge.other { background-color: var(--color-other); }
+        .badge.puraichi { background: var(--c-puraichi); }
+        .badge.app { background: var(--c-app); }
+        .badge.sale { background: var(--c-sale); }
+        .badge.other { background: var(--c-other); }
 
-        /* カードの情報 */
-        .card-date { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; }
-        .card-title { font-size: 16px; margin: 0 0 12px 0; line-height: 1.5; color: var(--text-primary); }
+        .card-title { font-size: 18px; font-weight: 700; margin: 0 0 12px 0; line-height: 1.4; color: var(--text-main); }
+        .card-date { font-size: 13px; color: var(--text-sub); margin-bottom: 16px; font-weight: 500; display: flex; align-items: center;}
+        .card-date i { margin-right: 6px; }
+        
         .card-desc {
-            font-size: 13px; color: var(--text-secondary); line-height: 1.5; flex-grow: 1;
-            background-color: #f4f6f8; padding: 10px; border-radius: var(--radius-sm); margin-bottom: 15px;
+            font-size: 14px; color: var(--text-sub); line-height: 1.6; flex-grow: 1;
         }
-        .card-footer { padding: 12px 20px; border-top: 1px solid #eee; text-align: right; background-color: #fafafa; }
-        .official-link { display: inline-flex; align-items: center; color: #007bff; text-decoration: none; font-size: 13px; font-weight: bold; }
-        .official-link i { margin-left: 5px; font-size: 11px; }
 
-        /* ステータス表示 */
-        .status-message { text-align: center; padding: 50px 20px; font-size: 16px; color: var(--text-secondary); }
-        .status-message i { display: block; font-size: 40px; margin-bottom: 15px; color: #ddd; }
-        .loading-spinner {
-            border: 3px solid rgba(0, 0, 0, 0.1); width: 40px; height: 40px; border-radius: 50%;
-            border-left-color: var(--seven-green); animation: spin 1s linear infinite; margin: 0 auto 15px auto;
+        /* アクションボタン（下部） */
+        .card-footer { padding: 0 24px 24px; }
+        .official-link {
+            display: flex; align-items: center; justify-content: center; width: 100%;
+            background: #f2f2f7; color: var(--text-main);
+            text-decoration: none; font-size: 14px; font-weight: 700;
+            padding: 12px 0; border-radius: var(--radius-lg);
+            transition: all 0.2s;
+        }
+        .official-link i { margin-left: 8px; font-size: 12px; transition: transform 0.2s; }
+        .official-link:hover { background: #e5e5ea; }
+        .official-link:hover i { transform: translateX(3px); }
+
+        /* ローディング */
+        .status-message { text-align: center; padding: 60px 20px; font-size: 15px; color: var(--text-sub); font-weight: 500;}
+        .spinner {
+            width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.05);
+            border-top-color: var(--text-main); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 20px auto;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
@@ -163,17 +135,13 @@
 <body>
 
     <header class="app-header">
-        <h1 class="app-title">
-            <i class="fa-solid fa-store"></i>
-            <span>7-Eleven Promo Finder</span>
-        </h1>
+        <h1 class="app-title">7-Eleven Promo Finder</h1>
         <div class="filter-container">
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn puraichi" data-filter="puraichi"><i class="fa-solid fa-gift"></i>プライチ</button>
             <button class="filter-btn app" data-filter="app"><i class="fa-solid fa-mobile-screen"></i>アプリ</button>
             <button class="filter-btn sale" data-filter="sale"><i class="fa-solid fa-tag"></i>セール</button>
-            <button class="filter-btn campaign" data-filter="campaign"><i class="fa-solid fa-bullhorn"></i>キャンペーン</button>
-            <button class="filter-btn other" data-filter="other"><i class="fa-solid fa-ellipsis"></i>その他</button>
+            <button class="filter-btn other" data-filter="other"><i class="fa-solid fa-sparkles"></i>キャンペーン・他</button>
         </div>
     </header>
 
@@ -183,18 +151,15 @@
     </main>
 
     <script>
-        // ==========================================
-        // 公開用GAS URL
-        // ==========================================
+        // GAS URL
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
-        // ==========================================
 
+        // カテゴリー設定（4種類に統合）
         const categories = {
-            puraichi: { label: 'プライチ', icon: 'fa-gift', class: 'puraichi' },
-            app: { label: 'アプリ限定', icon: 'fa-mobile-screen', class: 'app' },
-            sale: { label: 'セール', icon: 'fa-tag', class: 'sale' },
-            campaign: { label: 'キャンペーン', icon: 'fa-bullhorn', class: 'campaign' },
-            other: { label: 'その他', icon: 'fa-ellipsis', class: 'other' }
+            puraichi: { label: 'プライチ', class: 'puraichi' },
+            app: { label: 'アプリ限定', class: 'app' },
+            sale: { label: 'セール', class: 'sale' },
+            other: { label: 'キャンペーン・他', class: 'other' }
         };
 
         let allCampaigns = []; 
@@ -206,10 +171,7 @@
 
         init();
 
-        function init() {
-            fetchData(); 
-            setupFilters(); 
-        }
+        function init() { fetchData(); setupFilters(); }
 
         function setupFilters() {
             filterBtns.forEach(btn => {
@@ -226,43 +188,36 @@
             showLoading();
             try {
                 const response = await fetch(GAS_API_URL);
-                if (!response.ok) throw new Error('通信エラーが発生しました');
+                if (!response.ok) throw new Error('Network error');
                 
                 const data = await response.json();
                 
                 if (data.status === 'success' && data.data) {
-                    
-                    // 【重要】フロントエンド側での再分類ロジック
+                    // キャンペーンとその他を統合し、強力な自動振り分けを実行
                     allCampaigns = data.data.map(item => {
-                        let cat = item.category;
-                        // GAS側で「sale」と大雑把に分類されたものを細かく判定
-                        if (cat === 'sale') {
-                            const title = item.title || "";
-                            if (title.includes('セール') || title.includes('割引') || title.includes('値引')) {
-                                cat = 'sale';
-                            } else if (title.includes('キャンペーン') || title.includes('フェア') || title.includes('プレゼント')) {
-                                cat = 'campaign';
-                            } else {
-                                cat = 'other';
-                            }
+                        const title = item.title || "";
+                        const url = item.url || "";
+                        let cat = 'other'; // デフォルトは「キャンペーン・他」
+                        
+                        if (title.includes('プライチ') || title.includes('1つ買うと') || url.includes('puraichi')) {
+                            cat = 'puraichi';
+                        } else if (title.includes('アプリ') || title.includes('クーポン') || url.includes('app')) {
+                            cat = 'app';
+                        } else if (title.includes('セール') || title.includes('割引') || title.includes('値引') || title.includes('%OFF')) {
+                            cat = 'sale';
                         }
+                        
                         return { ...item, category: cat };
                     });
 
                     if (allCampaigns.length === 0) {
-                        showStatus('現在開催中のキャンペーン情報は見つかりませんでした。', 'fa-info-circle');
+                        showStatus('現在開催中のプロモーションは見つかりませんでした。', 'fa-info-circle');
                     } else {
                         statusEl.style.display = 'none'; 
                         renderCampaigns(); 
                     }
-                } else {
-                    throw new Error(data.message || 'データの取得に失敗しました');
-                }
-
-            } catch (error) {
-                console.error(error);
-                showStatus('❌ データの取得に失敗しました。<br>時間をおいて再読み込みしてください。', 'fa-circle-xmark');
-            }
+                } else { throw new Error('Data fetch failed'); }
+            } catch (error) { showStatus('情報の取得に失敗しました。<br>リロードしてください。', 'fa-triangle-exclamation'); }
         }
 
         function renderCampaigns() {
@@ -273,28 +228,24 @@
                 : allCampaigns.filter(item => item.category === currentFilter);
 
             if (filteredItems.length === 0) {
-                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999; padding: 40px;">該当する情報はありません。</div>';
+                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 60px;">該当する情報はありません。</div>';
                 return;
             }
             
             filteredItems.forEach(item => {
                 const catInfo = categories[item.category] || categories.other;
                 const card = document.createElement('div');
-                card.className = `card ${catInfo.class}`;
+                card.className = 'card';
                 card.innerHTML = `
                     <div class="card-content">
-                        <div class="badge ${catInfo.class}">
-                            <i class="fa-solid ${catInfo.icon}"></i>${catInfo.label}
-                        </div>
-                        <div class="card-date">
-                            <i class="fa-regular fa-calendar-days"></i>期間: ${item.date || '公式サイトをご確認ください'}
-                        </div>
+                        <div class="badge ${catInfo.class}">${catInfo.label}</div>
                         <h3 class="card-title">${item.title}</h3>
+                        <div class="card-date"><i class="fa-regular fa-clock"></i> 期間限定</div>
                         <div class="card-desc">${item.desc}</div>
                     </div>
                     <div class="card-footer">
                         <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="official-link">
-                            詳細を見る <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            公式サイトで見る <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>
                 `;
@@ -303,15 +254,13 @@
         }
 
         function showLoading() {
-            gridEl.innerHTML = '';
-            statusEl.style.display = 'block';
-            statusEl.innerHTML = '<div class="loading-spinner"></div><p>最新のPromo情報を取得中... ⏳</p>';
+            gridEl.innerHTML = ''; statusEl.style.display = 'block';
+            statusEl.innerHTML = '<div class="spinner"></div><p>Syncing data...</p>';
         }
 
         function showStatus(message, iconClass) {
-            gridEl.innerHTML = '';
-            statusEl.style.display = 'block';
-            statusEl.innerHTML = `<i class="fa-solid ${iconClass}"></i><p>${message}</p>`;
+            gridEl.innerHTML = ''; statusEl.style.display = 'block';
+            statusEl.innerHTML = `<i class="fa-solid ${iconClass}" style="font-size:32px; color:#d1d1d6; margin-bottom:16px;"></i><p>${message}</p>`;
         }
     </script>
 </body>
