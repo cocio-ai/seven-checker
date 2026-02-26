@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>セブン販促一目で分かる君</title>
+    <title>7-Eleven Promo Finder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
+            /* セブンイレブンカラー＆カテゴリーカラー */
             --seven-red: #E60012;
             --seven-green: #00803E;
             --seven-orange: #F39200;
+            --color-sale: #e83e8c;      /* セール（ピンク） */
+            --color-campaign: #17a2b8;  /* キャンペーン（ブルー） */
+            --color-other: #6c757d;     /* その他（グレー） */
+            
             --bg-color: #f8f9fa;
             --text-primary: #333333;
             --text-secondary: #666666;
@@ -33,7 +38,7 @@
         /* ヘッダーエリア */
         .app-header {
             background: var(--card-bg);
-            padding: 20px;
+            padding: 20px 10px;
             text-align: center;
             box-shadow: var(--shadow-sm);
             position: sticky;
@@ -42,62 +47,59 @@
         }
         .app-title {
             margin: 0 0 15px 0;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
+            letter-spacing: 0.5px;
         }
         .app-title span {
             color: var(--seven-green);
             border-bottom: 4px solid var(--seven-red);
             padding-bottom: 4px;
         }
-        .app-title i {
-            margin-right: 10px;
-            color: var(--seven-orange);
-        }
+        .app-title i { margin-right: 10px; color: var(--seven-orange); }
 
         /* タグフィルター */
         .filter-container {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             flex-wrap: wrap;
+            max-width: 600px;
+            margin: 0 auto;
         }
         .filter-btn {
             border: none;
             background: #eee;
             color: var(--text-secondary);
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 30px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
         }
-        .filter-btn i { margin-right: 6px; }
-        .filter-btn.active {
-            background: var(--seven-green);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 128, 62, 0.3);
-        }
-        .filter-btn.puraichi.active { background: var(--seven-red); box-shadow: 0 4px 12px rgba(230, 0, 18, 0.3); }
-        .filter-btn.app.active { background: var(--seven-orange); box-shadow: 0 4px 12px rgba(243, 146, 0, 0.3); }
+        .filter-btn i { margin-right: 5px; }
+        
+        /* フィルターのアクティブ状態のカラー */
+        .filter-btn.active { background: var(--seven-green); color: white; box-shadow: 0 4px 10px rgba(0, 128, 62, 0.3); }
+        .filter-btn.puraichi.active { background: var(--seven-red); box-shadow: 0 4px 10px rgba(230, 0, 18, 0.3); }
+        .filter-btn.app.active { background: var(--seven-orange); box-shadow: 0 4px 10px rgba(243, 146, 0, 0.3); }
+        .filter-btn.sale.active { background: var(--color-sale); box-shadow: 0 4px 10px rgba(232, 62, 140, 0.3); }
+        .filter-btn.campaign.active { background: var(--color-campaign); box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3); }
+        .filter-btn.other.active { background: var(--color-other); box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3); }
 
         /* メインコンテンツ */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 15px; }
         .campaign-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
         }
 
         /* カードデザイン */
@@ -106,124 +108,56 @@
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             display: flex;
             flex-direction: column;
             position: relative;
             border: 1px solid rgba(0,0,0,0.05);
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 6px;
-            background: var(--seven-green);
-        }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        
+        /* カード上部のラインカラー */
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--seven-green); }
         .card.puraichi::before { background: var(--seven-red); }
         .card.app::before { background: var(--seven-orange); }
+        .card.sale::before { background: var(--color-sale); }
+        .card.campaign::before { background: var(--color-campaign); }
+        .card.other::before { background: var(--color-other); }
 
         .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
         
         /* カテゴリーバッジ */
         .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 15px;
-            align-self: flex-start;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex; align-items: center; padding: 5px 12px;
+            border-radius: 20px; font-size: 11px; font-weight: bold; color: white;
+            margin-bottom: 12px; align-self: flex-start;
         }
-        .badge i { margin-right: 6px; }
-        .badge.sale { background-color: var(--seven-green); }
+        .badge i { margin-right: 5px; }
         .badge.puraichi { background-color: var(--seven-red); }
         .badge.app { background-color: var(--seven-orange); }
+        .badge.sale { background-color: var(--color-sale); }
+        .badge.campaign { background-color: var(--color-campaign); }
+        .badge.other { background-color: var(--color-other); }
 
         /* カードの情報 */
-        .card-date {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-        }
-        .card-date i { margin-right: 6px; color: var(--seven-orange); }
-        
-        .card-title {
-            font-size: 18px;
-            margin: 0 0 15px 0;
-            line-height: 1.5;
-            color: var(--text-primary);
-        }
-        
+        .card-date { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; }
+        .card-title { font-size: 16px; margin: 0 0 12px 0; line-height: 1.5; color: var(--text-primary); }
         .card-desc {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            flex-grow: 1;
-            background-color: #f4f6f8;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 20px;
+            font-size: 13px; color: var(--text-secondary); line-height: 1.5; flex-grow: 1;
+            background-color: #f4f6f8; padding: 10px; border-radius: var(--radius-sm); margin-bottom: 15px;
         }
+        .card-footer { padding: 12px 20px; border-top: 1px solid #eee; text-align: right; background-color: #fafafa; }
+        .official-link { display: inline-flex; align-items: center; color: #007bff; text-decoration: none; font-size: 13px; font-weight: bold; }
+        .official-link i { margin-left: 5px; font-size: 11px; }
 
-        /* 公式リンクボタン */
-        .card-footer {
-            padding: 15px 20px;
-            border-top: 1px solid #eee;
-            text-align: right;
-            background-color: #fafafa;
-        }
-        .official-link {
-            display: inline-flex;
-            align-items: center;
-            color: #007bff;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-            transition: opacity 0.2s;
-        }
-        .official-link:hover { opacity: 0.7; }
-        .official-link i { margin-left: 6px; font-size: 12px; }
-
-        /* ローディング・エラー表示 */
-        .status-message {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 18px;
-            color: var(--text-secondary);
-        }
-        .status-message i {
-            display: block;
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #ddd;
-        }
+        /* ステータス表示 */
+        .status-message { text-align: center; padding: 50px 20px; font-size: 16px; color: var(--text-secondary); }
+        .status-message i { display: block; font-size: 40px; margin-bottom: 15px; color: #ddd; }
         .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            border-left-color: var(--seven-green);
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px auto;
+            border: 3px solid rgba(0, 0, 0, 0.1); width: 40px; height: 40px; border-radius: 50%;
+            border-left-color: var(--seven-green); animation: spin 1s linear infinite; margin: 0 auto 15px auto;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* レスポンシブ調整 */
-        @media (max-width: 480px) {
-            .app-title { font-size: 20px; }
-            .filter-btn { padding: 8px 14px; font-size: 12px; }
-            .card-title { font-size: 16px; }
-            .campaign-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
@@ -231,21 +165,15 @@
     <header class="app-header">
         <h1 class="app-title">
             <i class="fa-solid fa-store"></i>
-            <span>セブン販促一目で分かる君</span>
+            <span>7-Eleven Promo Finder</span>
         </h1>
         <div class="filter-container">
-            <button class="filter-btn active" data-filter="all">
-                <i class="fa-solid fa-border-all"></i>すべて
-            </button>
-            <button class="filter-btn puraichi" data-filter="puraichi">
-                <i class="fa-solid fa-gift"></i>プライチ
-            </button>
-            <button class="filter-btn app" data-filter="app">
-                <i class="fa-solid fa-mobile-screen"></i>アプリ限定
-            </button>
-            <button class="filter-btn sale" data-filter="sale">
-                <i class="fa-solid fa-tags"></i>セール・他
-            </button>
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn puraichi" data-filter="puraichi"><i class="fa-solid fa-gift"></i>プライチ</button>
+            <button class="filter-btn app" data-filter="app"><i class="fa-solid fa-mobile-screen"></i>アプリ</button>
+            <button class="filter-btn sale" data-filter="sale"><i class="fa-solid fa-tag"></i>セール</button>
+            <button class="filter-btn campaign" data-filter="campaign"><i class="fa-solid fa-bullhorn"></i>キャンペーン</button>
+            <button class="filter-btn other" data-filter="other"><i class="fa-solid fa-ellipsis"></i>その他</button>
         </div>
     </header>
 
@@ -256,7 +184,7 @@
 
     <script>
         // ==========================================
-        // いただいた公開用（/exec）のGASのURLをセットしました！
+        // 公開用GAS URL
         // ==========================================
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
         // ==========================================
@@ -264,7 +192,9 @@
         const categories = {
             puraichi: { label: 'プライチ', icon: 'fa-gift', class: 'puraichi' },
             app: { label: 'アプリ限定', icon: 'fa-mobile-screen', class: 'app' },
-            sale: { label: 'セール・他', icon: 'fa-tags', class: 'sale' }
+            sale: { label: 'セール', icon: 'fa-tag', class: 'sale' },
+            campaign: { label: 'キャンペーン', icon: 'fa-bullhorn', class: 'campaign' },
+            other: { label: 'その他', icon: 'fa-ellipsis', class: 'other' }
         };
 
         let allCampaigns = []; 
@@ -295,14 +225,30 @@
         async function fetchData() {
             showLoading();
             try {
-                // GASへアクセスしてデータを取得
                 const response = await fetch(GAS_API_URL);
                 if (!response.ok) throw new Error('通信エラーが発生しました');
                 
                 const data = await response.json();
                 
                 if (data.status === 'success' && data.data) {
-                    allCampaigns = data.data;
+                    
+                    // 【重要】フロントエンド側での再分類ロジック
+                    allCampaigns = data.data.map(item => {
+                        let cat = item.category;
+                        // GAS側で「sale」と大雑把に分類されたものを細かく判定
+                        if (cat === 'sale') {
+                            const title = item.title || "";
+                            if (title.includes('セール') || title.includes('割引') || title.includes('値引')) {
+                                cat = 'sale';
+                            } else if (title.includes('キャンペーン') || title.includes('フェア') || title.includes('プレゼント')) {
+                                cat = 'campaign';
+                            } else {
+                                cat = 'other';
+                            }
+                        }
+                        return { ...item, category: cat };
+                    });
+
                     if (allCampaigns.length === 0) {
                         showStatus('現在開催中のキャンペーン情報は見つかりませんでした。', 'fa-info-circle');
                     } else {
@@ -327,12 +273,12 @@
                 : allCampaigns.filter(item => item.category === currentFilter);
 
             if (filteredItems.length === 0) {
-                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999; padding: 40px;">該当するキャンペーンはありません。</div>';
+                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999; padding: 40px;">該当する情報はありません。</div>';
                 return;
             }
             
             filteredItems.forEach(item => {
-                const catInfo = categories[item.category] || categories.sale;
+                const catInfo = categories[item.category] || categories.other;
                 const card = document.createElement('div');
                 card.className = `card ${catInfo.class}`;
                 card.innerHTML = `
@@ -348,7 +294,7 @@
                     </div>
                     <div class="card-footer">
                         <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="official-link">
-                            公式サイトで詳細を見る <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            詳細を見る <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
                 `;
@@ -359,7 +305,7 @@
         function showLoading() {
             gridEl.innerHTML = '';
             statusEl.style.display = 'block';
-            statusEl.innerHTML = '<div class="loading-spinner"></div><p>Googleのサーバーから最新情報を取得中... ⏳</p>';
+            statusEl.innerHTML = '<div class="loading-spinner"></div><p>最新のPromo情報を取得中... ⏳</p>';
         }
 
         function showStatus(message, iconClass) {
