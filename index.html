@@ -17,7 +17,6 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding-bottom: 80px; }
 
-        /* ヘッダー（すりガラス効果） */
         .app-header {
             position: sticky; top: 0; z-index: 100;
             background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -31,7 +30,6 @@
         .view-btn { border: none; background: transparent; color: var(--text-sub); padding: 8px 16px; border-radius: 8px; font-size: 15px; cursor: pointer; transition: 0.2s; }
         .view-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 
-        /* ダッシュボード（地域選択＆新商品アクセス） */
         .dashboard { max-width: 1200px; margin: 24px auto 16px; padding: 0 20px; }
         .section-title { font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
         
@@ -45,7 +43,6 @@
         }
         .region-selector select:focus { outline: none; border-color: #007aff; box-shadow: 0 0 0 3px rgba(0,122,255,0.2); }
 
-        /* 新商品リッチカード */
         .new-product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
         .new-card {
             display: flex; flex-direction: column; justify-content: center; padding: 20px 16px;
@@ -55,16 +52,12 @@
         .new-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
         .new-card::after { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 16px; opacity: 0.5; font-size: 14px; transition: transform 0.3s; }
         .new-card:hover::after { transform: translateX(4px); opacity: 1; }
-        
-        /* グラデーションデザイン */
         .new-card.this-week { background: linear-gradient(135deg, #34c759 0%, #28a745 100%); }
         .new-card.next-week { background: linear-gradient(135deg, #ff9500 0%, #ff8c00 100%); }
-        
         .new-card i.main-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.9; }
         .new-card .sub-text { font-size: 11px; font-weight: 700; opacity: 0.8; letter-spacing: 0.5px; margin-bottom: 4px; }
         .new-card .main-text { font-size: 16px; font-weight: 800; }
 
-        /* フィルタータブ */
         .filter-container { display: flex; gap: 8px; justify-content: flex-start; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
         .filter-container::-webkit-scrollbar { display: none; }
         .filter-btn {
@@ -73,11 +66,9 @@
         }
         .filter-btn.active { background: #1c1c1e; color: #fff; transform: scale(1.03); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
-        /* キャンペーンリスト */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         
-        /* キャンペーンカード */
         .card { background: var(--card-bg); border-radius: 20px; box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s; border: 1px solid rgba(0,0,0,0.03); }
         .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
         .card-content { padding: 24px; flex-grow: 1; }
@@ -122,16 +113,16 @@
     </header>
 
     <div class="dashboard">
-        <div class="section-title">エリアと新商品をチェック</div>
+        <div class="section-title">エリアを選択</div>
         
         <div class="region-selector">
             <select id="region-select">
-                <option value="all">全国の情報を表示</option>
+                <option value="all" selected>全国の情報を表示</option>
                 <option value="hokkaido">北海道</option>
                 <option value="tohoku">東北</option>
                 <option value="kanto">関東</option>
                 <option value="koshinetsu">甲信越・北陸</option>
-                <option value="tokai" selected>東海（愛知・岐阜・三重・静岡）</option>
+                <option value="tokai">東海（愛知・岐阜・三重・静岡）</option>
                 <option value="kinki">近畿</option>
                 <option value="chugoku">中国・四国</option>
                 <option value="kyushu">九州・沖縄</option>
@@ -139,14 +130,14 @@
         </div>
 
         <div class="new-product-grid">
-            <a href="#" target="_blank" id="link-this-week" class="new-card this-week">
+            <a href="https://www.sej.co.jp/products/a/thisweek/" target="_blank" rel="noopener noreferrer" id="link-this-week" class="new-card this-week">
                 <i class="fa-solid fa-box-open main-icon"></i>
-                <div class="sub-text" id="label-this">東海エリア</div>
+                <div class="sub-text" id="label-this">全国エリア</div>
                 <div class="main-text">今週の新商品</div>
             </a>
-            <a href="#" target="_blank" id="link-next-week" class="new-card next-week">
+            <a href="https://www.sej.co.jp/products/a/nextweek/" target="_blank" rel="noopener noreferrer" id="link-next-week" class="new-card next-week">
                 <i class="fa-solid fa-truck-fast main-icon"></i>
-                <div class="sub-text" id="label-next">東海エリア</div>
+                <div class="sub-text" id="label-next">全国エリア</div>
                 <div class="main-text">来週の新商品</div>
             </a>
         </div>
@@ -171,7 +162,6 @@
     </main>
 
     <script>
-        // GAS URL
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
 
         const categoryColors = { puraichi: '#ff3b30', app: '#ff9500', sale: '#ff2d55', other: '#007aff' };
@@ -182,7 +172,6 @@
             other: { label: 'キャンペーン・他', class: 'other' }
         };
 
-        // 地域別URLマッピング
         const regionUrls = {
             all: { this: "https://www.sej.co.jp/products/a/thisweek/", next: "https://www.sej.co.jp/products/a/nextweek/" },
             hokkaido: { this: "https://www.sej.co.jp/products/a/thisweek/area/hokkaido/", next: "https://www.sej.co.jp/products/a/nextweek/area/hokkaido/" },
@@ -193,6 +182,18 @@
             kinki: { this: "https://www.sej.co.jp/products/a/thisweek/area/kinki/", next: "https://www.sej.co.jp/products/a/nextweek/area/kinki/" },
             chugoku: { this: "https://www.sej.co.jp/products/a/thisweek/area/chugoku/", next: "https://www.sej.co.jp/products/a/nextweek/area/chugoku/" },
             kyushu: { this: "https://www.sej.co.jp/products/a/thisweek/area/kyushu/", next: "https://www.sej.co.jp/products/a/nextweek/area/kyushu/" }
+        };
+
+        const regionKeywords = {
+            all: [],
+            hokkaido: ['北海道'],
+            tohoku: ['東北', '青森', '岩手', '宮城', '秋田', '山形', '福島'],
+            kanto: ['関東', '茨城', '栃木', '群馬', '埼玉', '千葉', '東京', '神奈川'],
+            koshinetsu: ['甲信越', '北陸', '新潟', '富山', '石川', '福井', '山梨', '長野'],
+            tokai: ['東海', '岐阜', '静岡', '愛知', '三重'],
+            kinki: ['近畿', '関西', '滋賀', '京都', '大阪', '兵庫', '奈良', '和歌山'],
+            chugoku: ['中国', '四国', '鳥取', '島根', '岡山', '広島', '山口', '徳島', '香川', '愛媛', '高知'],
+            kyushu: ['九州', '沖縄', '福岡', '佐賀', '長崎', '熊本', '大分', '宮崎', '鹿児島']
         };
 
         let allCampaigns = []; 
@@ -208,7 +209,7 @@
 
         function init() {
             fetchData();
-            updateProductLinks(); 
+            updateDashboard(); 
             
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -222,24 +223,31 @@
             });
 
             regionSelect.addEventListener('change', function() {
-                updateProductLinks();
-                renderCampaigns(); 
+                updateDashboard();
+                if (calEl.style.display === 'block') {
+                    renderCalendar();
+                } else {
+                    renderCampaigns(); 
+                }
             });
         }
 
-        function updateProductLinks() {
-            const selectedRegion = regionSelect.value;
-            const linkData = regionUrls[selectedRegion];
-            
-            // "東海（愛知...）" のような文字から "東海エリア" というラベルを生成
-            let regionName = regionSelect.options[regionSelect.selectedIndex].text.split('（')[0];
-            if (selectedRegionName === '全国の情報を表示') regionName = '全国';
-            
-            document.getElementById('link-this-week').href = linkData.this;
-            document.getElementById('link-next-week').href = linkData.next;
-            
-            document.getElementById('label-this').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
-            document.getElementById('label-next').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
+        function updateDashboard() {
+            try {
+                const selectedRegion = regionSelect.value;
+                const linkData = regionUrls[selectedRegion];
+                
+                let regionName = regionSelect.options[regionSelect.selectedIndex].text.split('（')[0];
+                if (regionName === '全国の情報を表示') regionName = '全国';
+                
+                document.getElementById('link-this-week').href = linkData.this;
+                document.getElementById('link-next-week').href = linkData.next;
+                
+                document.getElementById('label-this').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
+                document.getElementById('label-next').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
+            } catch (e) {
+                console.error('Update Error:', e);
+            }
         }
 
         function switchView(view) {
@@ -275,6 +283,20 @@
             }
         }
 
+        function getFilteredData() {
+            let data = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            
+            const selectedRegion = regionSelect.value;
+            if (selectedRegion !== 'all') {
+                const keywords = regionKeywords[selectedRegion];
+                data = data.filter(item => {
+                    if (!item.region) return true;
+                    return keywords.some(kw => item.region.includes(kw));
+                });
+            }
+            return data;
+        }
+
         function renderCalendar() {
             if (!calendar) {
                 calendar = new FullCalendar.Calendar(calEl, {
@@ -286,9 +308,9 @@
             }
             calendar.removeAllEvents();
             
-            let filtered = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            const filteredData = getFilteredData();
             
-            filtered.forEach(item => {
+            filteredData.forEach(item => {
                 if (item.startDate) { 
                     calendar.addEvent({
                         title: item.title, start: item.startDate, end: item.endDate,
@@ -300,10 +322,10 @@
 
         function renderCampaigns() {
             gridEl.innerHTML = ''; 
-            let filteredItems = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            const filteredItems = getFilteredData();
 
             if (filteredItems.length === 0) {
-                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 60px;"><i class="fa-solid fa-inbox" style="font-size:40px; margin-bottom:16px; opacity:0.3;"></i><br>該当するキャンペーンはありません。</div>';
+                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 60px;"><i class="fa-solid fa-inbox" style="font-size:40px; margin-bottom:16px; opacity:0.3;"></i><br>このエリアに該当するキャンペーンはありません。</div>';
                 return;
             }
             
