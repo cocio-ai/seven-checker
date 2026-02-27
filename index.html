@@ -8,16 +8,9 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <style>
         :root {
-            --bg-color: #f2f2f7; 
-            --card-bg: #ffffff;
-            --text-main: #1c1c1e;
-            --text-sub: #8e8e93;
-            --border-color: rgba(0, 0, 0, 0.05);
-            
-            --c-puraichi: #ff3b30; 
-            --c-app: #ff9500;      
-            --c-sale: #ff2d55;     
-            --c-other: #007aff;    
+            --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #1c1c1e; --text-sub: #8e8e93;
+            --c-puraichi: #ff3b30; --c-app: #ff9500; --c-sale: #ff2d55; --c-other: #007aff; 
+            --c-new: #34c759; /* 新商品用のグリーン */
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding-bottom: 60px; }
@@ -25,34 +18,49 @@
         .app-header {
             position: sticky; top: 0; z-index: 100;
             background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 15px; border-bottom: 1px solid var(--border-color);
+            padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 10px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 15px; }
         .app-title { margin: 0; font-size: 20px; font-weight: 800; }
         
         .view-controls { display: flex; background: #e5e5ea; border-radius: 8px; padding: 2px; }
         .view-btn { border: none; background: transparent; color: var(--text-sub); padding: 6px 16px; border-radius: 6px; font-size: 16px; cursor: pointer; transition: 0.2s; }
         .view-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-        .filter-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
-        .filter-btn { border: none; background: #e5e5ea; color: var(--text-sub); padding: 8px 16px; border-radius: 100px; font-weight: 700; font-size: 12px; cursor: pointer; }
+        /* 地域選択ドロップダウン */
+        .region-selector {
+            max-width: 1200px; margin: 0 auto 15px; text-align: center;
+        }
+        .region-selector select {
+            appearance: none; background: #f2f2f7; border: 1px solid #d1d1d6; border-radius: 8px;
+            padding: 10px 35px 10px 15px; font-size: 14px; font-weight: 600; color: var(--text-main);
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 10px center; background-size: 16px;
+            cursor: pointer;
+        }
+
+        .filter-container { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+        .filter-btn { border: none; background: #e5e5ea; color: var(--text-sub); padding: 8px 14px; border-radius: 100px; font-weight: 700; font-size: 12px; cursor: pointer; }
         .filter-btn.active { background: #1c1c1e; color: #fff; }
 
         .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-        
-        /* リストビュー */
         .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
         .card { background: var(--card-bg); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; }
         .card-content { padding: 20px; flex-grow: 1; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; color: white; margin-bottom: 10px; }
+        
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; color: white; margin-bottom: 10px; margin-right: 5px;}
         .badge.puraichi { background: var(--c-puraichi); } .badge.app { background: var(--c-app); }
         .badge.sale { background: var(--c-sale); } .badge.other { background: var(--c-other); }
+        .badge.new_this { background: var(--c-new); } .badge.new_next { background: transparent; color: var(--c-new); border: 1px solid var(--c-new); }
+        
+        /* 地域限定バッジ */
+        .badge.region { background: #1c1c1e; color: #ffd60a; border: 1px solid #ffd60a;}
+
         .product-highlight { background: rgba(0, 122, 255, 0.1); color: var(--c-other); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; width: 100%;}
         .card-title { font-size: 15px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; }
         .card-date { font-size: 13px; color: #ff3b30; font-weight: bold; margin-bottom: 15px; }
         .official-link { display: block; text-align: center; background: #f2f2f7; color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: bold; padding: 12px; }
 
-        /* カレンダービューのカスタマイズ */
         #calendar-view { display: none; background: white; padding: 15px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .fc-toolbar-title { font-size: 18px !important; font-weight: bold; }
         .fc-event { cursor: pointer; border: none; padding: 2px 4px; border-radius: 4px; font-size: 11px; }
@@ -69,36 +77,51 @@
                 <button id="btn-cal" class="view-btn" onclick="switchView('calendar')"><i class="fa-regular fa-calendar-days"></i></button>
             </div>
         </div>
+        
+        <div class="region-selector">
+            <select id="region-select">
+                <option value="all">全国の情報を表示</option>
+                <option value="hokkaido">北海道</option>
+                <option value="tohoku">東北</option>
+                <option value="kanto">関東</option>
+                <option value="koshinetsu">甲信越・北陸</option>
+                <option value="tokai" selected>東海（愛知・岐阜・三重・静岡）</option>
+                <option value="kinki">近畿</option>
+                <option value="chugoku">中国・四国</option>
+                <option value="kyushu">九州・沖縄</option>
+            </select>
+        </div>
+
         <div class="filter-container">
             <button class="filter-btn active" data-filter="all">すべて</button>
             <button class="filter-btn puraichi" data-filter="puraichi">プライチ</button>
             <button class="filter-btn app" data-filter="app">アプリ</button>
             <button class="filter-btn sale" data-filter="sale">セール</button>
-            <button class="filter-btn other" data-filter="other">他</button>
+            <button class="filter-btn new_this" data-filter="new_this">今週の新商品</button>
         </div>
     </header>
 
     <main class="container">
         <div id="campaign-grid" class="campaign-grid"></div>
-        <div id="calendar-view"></div> <div id="status-message" class="status-message">データを取得中...</div>
+        <div id="calendar-view"></div>
+        <div id="status-message" class="status-message">データを取得中...</div>
     </main>
 
     <script>
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
 
-        const categoryColors = {
-            puraichi: '#ff3b30', app: '#ff9500', sale: '#ff2d55', other: '#007aff'
-        };
+        const categoryColors = { puraichi: '#ff3b30', app: '#ff9500', sale: '#ff2d55', other: '#007aff', new_this: '#34c759' };
         const categories = {
             puraichi: { label: 'プライチ', class: 'puraichi' },
             app: { label: 'アプリ限定', class: 'app' },
             sale: { label: 'セール', class: 'sale' },
-            other: { label: '他', class: 'other' }
+            other: { label: 'キャンペーン・他', class: 'other' },
+            new_this: { label: '今週の新商品', class: 'new_this' }
         };
 
         let allCampaigns = []; 
         let currentFilter = 'all'; 
-        let calendar; // カレンダーオブジェクト
+        let calendar; 
 
         const gridEl = document.getElementById('campaign-grid');
         const calEl = document.getElementById('calendar-view');
@@ -109,19 +132,21 @@
         function init() {
             fetchData();
             
-            // フィルターボタンの設定
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     currentFilter = btn.getAttribute('data-filter');
                     
-                    if (calEl.style.display === 'block') {
-                        renderCalendar(); // カレンダーの予定も絞り込み
-                    } else {
-                        renderCampaigns();
-                    }
+                    if (calEl.style.display === 'block') renderCalendar();
+                    else renderCampaigns();
                 });
+            });
+
+            // 地域が変更された時の処理（現在はUIの切り替えのみ）
+            document.getElementById('region-select').addEventListener('change', function() {
+                // 将来的にGAS側で地域ごとのURLを叩くように改修した場合、ここで再取得処理を走らせます。
+                renderCampaigns(); 
             });
         }
 
@@ -130,13 +155,9 @@
             document.getElementById('btn-cal').classList.toggle('active', view === 'calendar');
             
             if (view === 'list') {
-                calEl.style.display = 'none';
-                gridEl.style.display = 'grid';
-                renderCampaigns();
+                calEl.style.display = 'none'; gridEl.style.display = 'grid'; renderCampaigns();
             } else {
-                gridEl.style.display = 'none';
-                calEl.style.display = 'block';
-                renderCalendar();
+                gridEl.style.display = 'none'; calEl.style.display = 'block'; renderCalendar();
             }
         }
 
@@ -162,41 +183,28 @@
             }
         }
 
-        // --- 本物のカレンダー描画処理 ---
         function renderCalendar() {
             if (!calendar) {
-                // 初回のみカレンダーを初期化
                 calendar = new FullCalendar.Calendar(calEl, {
-                    initialView: 'dayGridMonth',
-                    locale: 'ja',
-                    height: 'auto',
+                    initialView: 'dayGridMonth', locale: 'ja', height: 'auto',
                     headerToolbar: { left: 'prev,next', center: 'title', right: 'today' },
-                    eventClick: function(info) {
-                        window.open(info.event.url, '_blank');
-                        info.jsEvent.preventDefault();
-                    }
+                    eventClick: function(info) { window.open(info.event.url, '_blank'); info.jsEvent.preventDefault(); }
                 });
                 calendar.render();
             }
-
-            // フィルターに合わせてカレンダーに予定をセット
             calendar.removeAllEvents();
             const filtered = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
             
             filtered.forEach(item => {
-                if (item.startDate) {
+                if (item.startDate && item.category !== 'new_this') { // 新商品はカレンダーに表示しない
                     calendar.addEvent({
-                        title: item.title,
-                        start: item.startDate,
-                        end: item.endDate, // GAS側で計算済みの正確な終了日
-                        url: item.url,
-                        backgroundColor: categoryColors[item.category] || categoryColors.other
+                        title: item.title, start: item.startDate, end: item.endDate,
+                        url: item.url, backgroundColor: categoryColors[item.category] || categoryColors.other
                     });
                 }
             });
         }
 
-        // --- リスト描画処理 ---
         function renderCampaigns() {
             gridEl.innerHTML = ''; 
             const filteredItems = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
@@ -210,15 +218,19 @@
                 const catInfo = categories[item.category] || categories.other;
                 const extractedProduct = extractProductName(item.title);
                 const productHtml = extractedProduct ? `<div class="product-highlight"><i class="fa-solid fa-box-open"></i> ${extractedProduct}</div>` : '';
+                
+                // 地域限定バッジの生成
+                const regionHtml = item.region ? `<span class="badge region"><i class="fa-solid fa-location-dot"></i> ${item.region}限定</span>` : '';
 
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
                     <div class="card-content">
                         <span class="badge ${catInfo.class}">${catInfo.label}</span>
+                        ${regionHtml}
                         ${productHtml}
                         <h3 class="card-title">${item.title}</h3>
-                        <div class="card-date"><i class="fa-regular fa-calendar"></i> ${item.date}</div>
+                        <div class="card-date"><i class="fa-regular fa-clock"></i> ${item.date}</div>
                     </div>
                     <a href="${item.url}" target="_blank" class="official-link">公式サイトで見る</a>
                 `;
