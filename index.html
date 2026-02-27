@@ -10,73 +10,119 @@
         :root {
             --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #1c1c1e; --text-sub: #8e8e93;
             --c-puraichi: #ff3b30; --c-app: #ff9500; --c-sale: #ff2d55; --c-other: #007aff; 
-            --c-new: #34c759; /* 新商品用のグリーン */
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 16px 32px rgba(0,0,0,0.1);
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding-bottom: 60px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding-bottom: 80px; }
 
+        /* ヘッダー（すりガラス効果） */
         .app-header {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            padding: 16px 20px; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 15px; }
-        .app-title { margin: 0; font-size: 20px; font-weight: 800; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .app-title { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
+        .app-title i { color: #00803E; margin-right: 6px; }
         
-        .view-controls { display: flex; background: #e5e5ea; border-radius: 8px; padding: 2px; }
-        .view-btn { border: none; background: transparent; color: var(--text-sub); padding: 6px 16px; border-radius: 6px; font-size: 16px; cursor: pointer; transition: 0.2s; }
-        .view-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .view-controls { display: flex; background: #e5e5ea; border-radius: 10px; padding: 3px; }
+        .view-btn { border: none; background: transparent; color: var(--text-sub); padding: 8px 16px; border-radius: 8px; font-size: 15px; cursor: pointer; transition: 0.2s; }
+        .view-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 
-        /* 地域選択ドロップダウン */
-        .region-selector {
-            max-width: 1200px; margin: 0 auto 15px; text-align: center;
-        }
+        /* ダッシュボード（地域選択＆新商品アクセス） */
+        .dashboard { max-width: 1200px; margin: 24px auto 16px; padding: 0 20px; }
+        .section-title { font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .region-selector { position: relative; margin-bottom: 16px; }
         .region-selector select {
-            appearance: none; background: #f2f2f7; border: 1px solid #d1d1d6; border-radius: 8px;
-            padding: 10px 35px 10px 15px; font-size: 14px; font-weight: 600; color: var(--text-main);
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: right 10px center; background-size: 16px;
-            cursor: pointer;
+            width: 100%; appearance: none; background: var(--card-bg); border: 1px solid rgba(0,0,0,0.08); border-radius: 14px;
+            padding: 14px 40px 14px 16px; font-size: 16px; font-weight: 700; color: var(--text-main);
+            box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.2s;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 16px center; background-size: 18px;
         }
+        .region-selector select:focus { outline: none; border-color: #007aff; box-shadow: 0 0 0 3px rgba(0,122,255,0.2); }
 
-        .filter-container { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-        .filter-btn { border: none; background: #e5e5ea; color: var(--text-sub); padding: 8px 14px; border-radius: 100px; font-weight: 700; font-size: 12px; cursor: pointer; }
-        .filter-btn.active { background: #1c1c1e; color: #fff; }
-
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-        .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; }
-        .card-content { padding: 20px; flex-grow: 1; }
+        /* 新商品リッチカード */
+        .new-product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .new-card {
+            display: flex; flex-direction: column; justify-content: center; padding: 20px 16px;
+            border-radius: 20px; text-decoration: none; color: white; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--shadow-md); position: relative; overflow: hidden;
+        }
+        .new-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .new-card::after { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 16px; opacity: 0.5; font-size: 14px; transition: transform 0.3s; }
+        .new-card:hover::after { transform: translateX(4px); opacity: 1; }
         
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; color: white; margin-bottom: 10px; margin-right: 5px;}
+        /* グラデーションデザイン */
+        .new-card.this-week { background: linear-gradient(135deg, #34c759 0%, #28a745 100%); }
+        .new-card.next-week { background: linear-gradient(135deg, #ff9500 0%, #ff8c00 100%); }
+        
+        .new-card i.main-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.9; }
+        .new-card .sub-text { font-size: 11px; font-weight: 700; opacity: 0.8; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .new-card .main-text { font-size: 16px; font-weight: 800; }
+
+        /* フィルタータブ */
+        .filter-container { display: flex; gap: 8px; justify-content: flex-start; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
+        .filter-container::-webkit-scrollbar { display: none; }
+        .filter-btn {
+            border: none; background: #e5e5ea; color: var(--text-sub); padding: 10px 18px; border-radius: 100px;
+            font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+        }
+        .filter-btn.active { background: #1c1c1e; color: #fff; transform: scale(1.03); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+
+        /* キャンペーンリスト */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        /* キャンペーンカード */
+        .card { background: var(--card-bg); border-radius: 20px; box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s; border: 1px solid rgba(0,0,0,0.03); }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .card-content { padding: 24px; flex-grow: 1; }
+        
+        .badges-wrapper { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .badge { padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; color: white; letter-spacing: 0.5px;}
         .badge.puraichi { background: var(--c-puraichi); } .badge.app { background: var(--c-app); }
         .badge.sale { background: var(--c-sale); } .badge.other { background: var(--c-other); }
-        .badge.new_this { background: var(--c-new); } .badge.new_next { background: transparent; color: var(--c-new); border: 1px solid var(--c-new); }
+        .badge.region { background: #1c1c1e; color: #ffd60a; }
+
+        .product-highlight { display: inline-flex; align-items: center; background: rgba(0, 122, 255, 0.08); color: var(--c-other); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; margin-bottom: 12px; width: 100%; border: 1px solid rgba(0, 122, 255, 0.1);}
+        .product-highlight i { margin-right: 6px; }
         
-        /* 地域限定バッジ */
-        .badge.region { background: #1c1c1e; color: #ffd60a; border: 1px solid #ffd60a;}
+        .card-title { font-size: 16px; font-weight: 800; margin: 0 0 12px 0; line-height: 1.5; color: var(--text-main); }
+        .card-date { font-size: 13px; color: #ff3b30; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; }
+        .card-date i { margin-right: 6px; }
+        
+        .card-footer { padding: 0 24px 24px; }
+        .official-link { display: flex; justify-content: center; align-items: center; background: #f2f2f7; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 700; padding: 14px; border-radius: 12px; transition: 0.2s; }
+        .official-link:hover { background: #e5e5ea; }
+        .official-link i { margin-left: 8px; font-size: 12px; }
 
-        .product-highlight { background: rgba(0, 122, 255, 0.1); color: var(--c-other); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; width: 100%;}
-        .card-title { font-size: 15px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; }
-        .card-date { font-size: 13px; color: #ff3b30; font-weight: bold; margin-bottom: 15px; }
-        .official-link { display: block; text-align: center; background: #f2f2f7; color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: bold; padding: 12px; }
-
-        #calendar-view { display: none; background: white; padding: 15px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .fc-toolbar-title { font-size: 18px !important; font-weight: bold; }
-        .fc-event { cursor: pointer; border: none; padding: 2px 4px; border-radius: 4px; font-size: 11px; }
-        .status-message { text-align: center; padding: 40px; color: var(--text-sub); }
+        #calendar-view { display: none; background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow-sm); }
+        .fc-toolbar-title { font-size: 18px !important; font-weight: 800; }
+        .fc-event { cursor: pointer; border: none; padding: 3px 6px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        
+        .status-message { text-align: center; padding: 60px 20px; color: var(--text-sub); font-weight: 600; }
+        .spinner { width: 36px; height: 36px; border: 3px solid rgba(0,0,0,0.1); border-top-color: #00803E; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px auto; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <header class="app-header">
         <div class="header-top">
-            <h1 class="app-title"><i class="fa-solid fa-store" style="color:#00803E"></i> 7-11 Promo</h1>
+            <h1 class="app-title"><i class="fa-solid fa-store"></i>7-11 Promo</h1>
             <div class="view-controls">
                 <button id="btn-list" class="view-btn active" onclick="switchView('list')"><i class="fa-solid fa-list"></i></button>
                 <button id="btn-cal" class="view-btn" onclick="switchView('calendar')"><i class="fa-regular fa-calendar-days"></i></button>
             </div>
         </div>
+    </header>
+
+    <div class="dashboard">
+        <div class="section-title">エリアと新商品をチェック</div>
         
         <div class="region-selector">
             <select id="region-select">
@@ -92,31 +138,61 @@
             </select>
         </div>
 
-        <div class="filter-container">
-            <button class="filter-btn active" data-filter="all">すべて</button>
-            <button class="filter-btn puraichi" data-filter="puraichi">プライチ</button>
-            <button class="filter-btn app" data-filter="app">アプリ</button>
-            <button class="filter-btn sale" data-filter="sale">セール</button>
-            <button class="filter-btn new_this" data-filter="new_this">今週の新商品</button>
+        <div class="new-product-grid">
+            <a href="#" target="_blank" id="link-this-week" class="new-card this-week">
+                <i class="fa-solid fa-box-open main-icon"></i>
+                <div class="sub-text" id="label-this">東海エリア</div>
+                <div class="main-text">今週の新商品</div>
+            </a>
+            <a href="#" target="_blank" id="link-next-week" class="new-card next-week">
+                <i class="fa-solid fa-truck-fast main-icon"></i>
+                <div class="sub-text" id="label-next">東海エリア</div>
+                <div class="main-text">来週の新商品</div>
+            </a>
         </div>
-    </header>
+
+        <div class="section-title" style="margin-top: 24px;">キャンペーン一覧</div>
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">すべて表示</button>
+            <button class="filter-btn" data-filter="puraichi">🎁 プライチ</button>
+            <button class="filter-btn" data-filter="app">📱 アプリ限定</button>
+            <button class="filter-btn" data-filter="sale">🏷️ セール</button>
+            <button class="filter-btn" data-filter="other">🌟 キャンペーン・他</button>
+        </div>
+    </div>
 
     <main class="container">
         <div id="campaign-grid" class="campaign-grid"></div>
         <div id="calendar-view"></div>
-        <div id="status-message" class="status-message">データを取得中...</div>
+        <div id="status-message" class="status-message">
+            <div class="spinner"></div>
+            データを同期中...
+        </div>
     </main>
 
     <script>
+        // GAS URL
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
 
-        const categoryColors = { puraichi: '#ff3b30', app: '#ff9500', sale: '#ff2d55', other: '#007aff', new_this: '#34c759' };
+        const categoryColors = { puraichi: '#ff3b30', app: '#ff9500', sale: '#ff2d55', other: '#007aff' };
         const categories = {
             puraichi: { label: 'プライチ', class: 'puraichi' },
             app: { label: 'アプリ限定', class: 'app' },
             sale: { label: 'セール', class: 'sale' },
-            other: { label: 'キャンペーン・他', class: 'other' },
-            new_this: { label: '今週の新商品', class: 'new_this' }
+            other: { label: 'キャンペーン・他', class: 'other' }
+        };
+
+        // 地域別URLマッピング
+        const regionUrls = {
+            all: { this: "https://www.sej.co.jp/products/a/thisweek/", next: "https://www.sej.co.jp/products/a/nextweek/" },
+            hokkaido: { this: "https://www.sej.co.jp/products/a/thisweek/area/hokkaido/", next: "https://www.sej.co.jp/products/a/nextweek/area/hokkaido/" },
+            tohoku: { this: "https://www.sej.co.jp/products/a/thisweek/area/tohoku/", next: "https://www.sej.co.jp/products/a/nextweek/area/tohoku/" },
+            kanto: { this: "https://www.sej.co.jp/products/a/thisweek/area/kanto/", next: "https://www.sej.co.jp/products/a/nextweek/area/kanto/" },
+            koshinetsu: { this: "https://www.sej.co.jp/products/a/thisweek/area/koshinetsu/", next: "https://www.sej.co.jp/products/a/nextweek/area/koshinetsu/" },
+            tokai: { this: "https://www.sej.co.jp/products/a/thisweek/area/tokai/", next: "https://www.sej.co.jp/products/a/nextweek/area/tokai/" },
+            kinki: { this: "https://www.sej.co.jp/products/a/thisweek/area/kinki/", next: "https://www.sej.co.jp/products/a/nextweek/area/kinki/" },
+            chugoku: { this: "https://www.sej.co.jp/products/a/thisweek/area/chugoku/", next: "https://www.sej.co.jp/products/a/nextweek/area/chugoku/" },
+            kyushu: { this: "https://www.sej.co.jp/products/a/thisweek/area/kyushu/", next: "https://www.sej.co.jp/products/a/nextweek/area/kyushu/" }
         };
 
         let allCampaigns = []; 
@@ -126,11 +202,13 @@
         const gridEl = document.getElementById('campaign-grid');
         const calEl = document.getElementById('calendar-view');
         const statusEl = document.getElementById('status-message');
+        const regionSelect = document.getElementById('region-select');
 
         init();
 
         function init() {
             fetchData();
+            updateProductLinks(); 
             
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -143,11 +221,25 @@
                 });
             });
 
-            // 地域が変更された時の処理（現在はUIの切り替えのみ）
-            document.getElementById('region-select').addEventListener('change', function() {
-                // 将来的にGAS側で地域ごとのURLを叩くように改修した場合、ここで再取得処理を走らせます。
+            regionSelect.addEventListener('change', function() {
+                updateProductLinks();
                 renderCampaigns(); 
             });
+        }
+
+        function updateProductLinks() {
+            const selectedRegion = regionSelect.value;
+            const linkData = regionUrls[selectedRegion];
+            
+            // "東海（愛知...）" のような文字から "東海エリア" というラベルを生成
+            let regionName = regionSelect.options[regionSelect.selectedIndex].text.split('（')[0];
+            if (selectedRegionName === '全国の情報を表示') regionName = '全国';
+            
+            document.getElementById('link-this-week').href = linkData.this;
+            document.getElementById('link-next-week').href = linkData.next;
+            
+            document.getElementById('label-this').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
+            document.getElementById('label-next').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
         }
 
         function switchView(view) {
@@ -176,10 +268,10 @@
                     statusEl.style.display = 'none';
                     renderCampaigns();
                 } else {
-                    statusEl.innerHTML = 'データの取得に失敗しました。';
+                    statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="font-size:32px; margin-bottom:12px; display:block;"></i>データの取得に失敗しました。';
                 }
             } catch (error) {
-                statusEl.innerHTML = '通信エラーが発生しました。';
+                statusEl.innerHTML = '<i class="fa-solid fa-wifi" style="font-size:32px; margin-bottom:12px; display:block;"></i>通信エラーが発生しました。';
             }
         }
 
@@ -193,10 +285,11 @@
                 calendar.render();
             }
             calendar.removeAllEvents();
-            const filtered = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            
+            let filtered = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
             
             filtered.forEach(item => {
-                if (item.startDate && item.category !== 'new_this') { // 新商品はカレンダーに表示しない
+                if (item.startDate) { 
                     calendar.addEvent({
                         title: item.title, start: item.startDate, end: item.endDate,
                         url: item.url, backgroundColor: categoryColors[item.category] || categoryColors.other
@@ -207,10 +300,10 @@
 
         function renderCampaigns() {
             gridEl.innerHTML = ''; 
-            const filteredItems = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            let filteredItems = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
 
             if (filteredItems.length === 0) {
-                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 40px;">該当する情報はありません。</div>';
+                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 60px;"><i class="fa-solid fa-inbox" style="font-size:40px; margin-bottom:16px; opacity:0.3;"></i><br>該当するキャンペーンはありません。</div>';
                 return;
             }
             
@@ -218,21 +311,23 @@
                 const catInfo = categories[item.category] || categories.other;
                 const extractedProduct = extractProductName(item.title);
                 const productHtml = extractedProduct ? `<div class="product-highlight"><i class="fa-solid fa-box-open"></i> ${extractedProduct}</div>` : '';
-                
-                // 地域限定バッジの生成
                 const regionHtml = item.region ? `<span class="badge region"><i class="fa-solid fa-location-dot"></i> ${item.region}限定</span>` : '';
 
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
                     <div class="card-content">
-                        <span class="badge ${catInfo.class}">${catInfo.label}</span>
-                        ${regionHtml}
+                        <div class="badges-wrapper">
+                            <span class="badge ${catInfo.class}">${catInfo.label}</span>
+                            ${regionHtml}
+                        </div>
                         ${productHtml}
                         <h3 class="card-title">${item.title}</h3>
                         <div class="card-date"><i class="fa-regular fa-clock"></i> ${item.date}</div>
                     </div>
-                    <a href="${item.url}" target="_blank" class="official-link">公式サイトで見る</a>
+                    <div class="card-footer">
+                        <a href="${item.url}" target="_blank" class="official-link">公式サイトで見る <i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 `;
                 gridEl.appendChild(card);
             });
