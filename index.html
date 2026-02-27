@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>7-Eleven Promo Finder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <style>
         :root {
             --bg-color: #f2f2f7; 
@@ -17,110 +18,59 @@
             --c-app: #ff9500;      
             --c-sale: #ff2d55;     
             --c-other: #007aff;    
-            
-            --shadow-card: 0 8px 24px rgba(0,0,0,0.04);
-            --shadow-hover: 0 16px 32px rgba(0,0,0,0.08);
-            --radius-xl: 24px;
-            --radius-lg: 16px;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-            background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; padding-bottom: 60px;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding-bottom: 60px; }
 
-        /* ヘッダー */
         .app-header {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 20px 15px 15px; border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 15px; border-bottom: 1px solid var(--border-color);
         }
-        .header-top {
-            display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 16px; padding: 0 10px;
-        }
-        .app-title {
-            margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px;
-            background: linear-gradient(135deg, #00803E, #F39200, #E60012);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        /* 表示切り替えボタン（リスト/カレンダー） */
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 10px; }
+        .app-title { margin: 0; font-size: 20px; font-weight: 800; }
+        
         .view-controls { display: flex; background: #e5e5ea; border-radius: 8px; padding: 2px; }
-        .view-btn {
-            border: none; background: transparent; color: var(--text-sub); padding: 6px 12px;
-            border-radius: 6px; font-size: 14px; cursor: pointer; transition: 0.2s;
-        }
+        .view-btn { border: none; background: transparent; color: var(--text-sub); padding: 6px 16px; border-radius: 6px; font-size: 16px; cursor: pointer; transition: 0.2s; }
         .view-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-        /* フィルタータブ */
-        .filter-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 600px; margin: 0 auto; }
-        .filter-btn {
-            border: none; background: #e5e5ea; color: var(--text-sub); padding: 8px 16px; border-radius: 100px;
-            font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center;
-        }
-        .filter-btn.active { background: #1c1c1e; color: #fff; transform: scale(1.05); }
+        .filter-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+        .filter-btn { border: none; background: #e5e5ea; color: var(--text-sub); padding: 8px 16px; border-radius: 100px; font-weight: 700; font-size: 12px; cursor: pointer; }
+        .filter-btn.active { background: #1c1c1e; color: #fff; }
 
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
         
         /* リストビュー */
-        .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-        
-        /* カレンダービュー（モックアップUI） */
-        .calendar-view { display: none; background: var(--card-bg); border-radius: var(--radius-xl); padding: 40px 20px; text-align: center; box-shadow: var(--shadow-card); }
-        .calendar-view i { font-size: 48px; color: var(--text-sub); margin-bottom: 16px; opacity: 0.5; }
-        .calendar-view h3 { margin: 0 0 10px; font-size: 18px; }
-        .calendar-view p { color: var(--text-sub); font-size: 14px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
+        .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; }
+        .card-content { padding: 20px; flex-grow: 1; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; color: white; margin-bottom: 10px; }
+        .badge.puraichi { background: var(--c-puraichi); } .badge.app { background: var(--c-app); }
+        .badge.sale { background: var(--c-sale); } .badge.other { background: var(--c-other); }
+        .product-highlight { background: rgba(0, 122, 255, 0.1); color: var(--c-other); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; width: 100%;}
+        .card-title { font-size: 15px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; }
+        .card-date { font-size: 13px; color: #ff3b30; font-weight: bold; margin-bottom: 15px; }
+        .official-link { display: block; text-align: center; background: #f2f2f7; color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: bold; padding: 12px; }
 
-        /* カードデザイン */
-        .card {
-            background: var(--card-bg); border-radius: var(--radius-xl); box-shadow: var(--shadow-card);
-            transition: all 0.3s; display: flex; flex-direction: column; overflow: hidden;
-        }
-        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-        .card-content { padding: 24px; flex-grow: 1; }
-        
-        .badge {
-            display: inline-flex; padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 800;
-            color: white; margin-bottom: 12px; letter-spacing: 0.5px;
-        }
-        .badge.puraichi { background: var(--c-puraichi); }
-        .badge.app { background: var(--c-app); }
-        .badge.sale { background: var(--c-sale); }
-        .badge.other { background: var(--c-other); }
-
-        /* 商品名ハイライト機能 */
-        .product-highlight {
-            display: inline-flex; align-items: center; background: rgba(0, 122, 255, 0.1); color: var(--c-other);
-            padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 12px; width: 100%;
-        }
-        .product-highlight i { margin-right: 6px; }
-
-        .card-title { font-size: 16px; font-weight: 700; margin: 0 0 12px 0; line-height: 1.4; }
-        /* 日付部分を強調 */
-        .card-date { font-size: 13px; color: #ff3b30; margin-bottom: 16px; font-weight: bold;}
-        
-        .card-footer { padding: 0 24px 24px; }
-        .official-link {
-            display: flex; justify-content: center; background: #f2f2f7; color: var(--text-main);
-            text-decoration: none; font-size: 14px; font-weight: 700; padding: 12px; border-radius: var(--radius-lg);
-        }
-        
-        .status-message { text-align: center; padding: 60px 20px; font-size: 15px; color: var(--text-sub); font-weight: 500;}
+        /* カレンダービューのカスタマイズ */
+        #calendar-view { display: none; background: white; padding: 15px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .fc-toolbar-title { font-size: 18px !important; font-weight: bold; }
+        .fc-event { cursor: pointer; border: none; padding: 2px 4px; border-radius: 4px; font-size: 11px; }
+        .status-message { text-align: center; padding: 40px; color: var(--text-sub); }
     </style>
 </head>
 <body>
 
     <header class="app-header">
         <div class="header-top">
-            <h1 class="app-title">Promo Finder</h1>
+            <h1 class="app-title"><i class="fa-solid fa-store" style="color:#00803E"></i> 7-11 Promo</h1>
             <div class="view-controls">
                 <button id="btn-list" class="view-btn active" onclick="switchView('list')"><i class="fa-solid fa-list"></i></button>
                 <button id="btn-cal" class="view-btn" onclick="switchView('calendar')"><i class="fa-regular fa-calendar-days"></i></button>
             </div>
         </div>
         <div class="filter-container">
-            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn active" data-filter="all">すべて</button>
             <button class="filter-btn puraichi" data-filter="puraichi">プライチ</button>
             <button class="filter-btn app" data-filter="app">アプリ</button>
             <button class="filter-btn sale" data-filter="sale">セール</button>
@@ -130,38 +80,50 @@
 
     <main class="container">
         <div id="campaign-grid" class="campaign-grid"></div>
-        
-        <div id="calendar-view" class="calendar-view">
-            <i class="fa-regular fa-calendar-xmark"></i>
-            <h3>カレンダー機能について</h3>
-            <p>今回、GASが自動で日付テキスト（2月20日〜など）を抜き出せるように進化しました！<br><br>次のステップとして、この文字データを「システムが理解できる本物の日付データ」に変換する処理を実装することで、カレンダーに予定をマッピングできるようになります。</p>
-        </div>
-
-        <div id="status-message" class="status-message"></div>
+        <div id="calendar-view"></div> <div id="status-message" class="status-message">データを取得中...</div>
     </main>
 
     <script>
-        // 公開用GAS URL
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
 
+        const categoryColors = {
+            puraichi: '#ff3b30', app: '#ff9500', sale: '#ff2d55', other: '#007aff'
+        };
         const categories = {
             puraichi: { label: 'プライチ', class: 'puraichi' },
             app: { label: 'アプリ限定', class: 'app' },
             sale: { label: 'セール', class: 'sale' },
-            other: { label: 'キャンペーン・他', class: 'other' }
+            other: { label: '他', class: 'other' }
         };
 
         let allCampaigns = []; 
         let currentFilter = 'all'; 
+        let calendar; // カレンダーオブジェクト
 
         const gridEl = document.getElementById('campaign-grid');
         const calEl = document.getElementById('calendar-view');
         const statusEl = document.getElementById('status-message');
-        const filterBtns = document.querySelectorAll('.filter-btn');
 
         init();
 
-        function init() { fetchData(); setupFilters(); }
+        function init() {
+            fetchData();
+            
+            // フィルターボタンの設定
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.getAttribute('data-filter');
+                    
+                    if (calEl.style.display === 'block') {
+                        renderCalendar(); // カレンダーの予定も絞り込み
+                    } else {
+                        renderCampaigns();
+                    }
+                });
+            });
+        }
 
         function switchView(view) {
             document.getElementById('btn-list').classList.toggle('active', view === 'list');
@@ -173,108 +135,95 @@
                 renderCampaigns();
             } else {
                 gridEl.style.display = 'none';
-                statusEl.style.display = 'none';
                 calEl.style.display = 'block';
+                renderCalendar();
             }
-        }
-
-        function setupFilters() {
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentFilter = btn.getAttribute('data-filter');
-                    
-                    if (calEl.style.display === 'block') switchView('list');
-                    else renderCampaigns();
-                });
-            });
         }
 
         function extractProductName(text) {
             const matches = text.match(/「(.+?)」/g);
-            if (matches) {
-                return matches.map(m => m.replace(/[「」]/g, '')).join(' / ');
-            }
-            return null;
+            return matches ? matches.map(m => m.replace(/[「」]/g, '')).join(' / ') : null;
         }
 
         async function fetchData() {
-            showLoading();
             try {
                 const response = await fetch(GAS_API_URL);
-                if (!response.ok) throw new Error('Network error');
-                
                 const data = await response.json();
                 
                 if (data.status === 'success' && data.data) {
-                    allCampaigns = data.data.map(item => {
-                        const title = item.title || "";
-                        const url = item.url || "";
-                        let cat = 'other'; 
-                        
-                        if (title.includes('プライチ') || title.includes('1つ買うと') || url.includes('puraichi')) cat = 'puraichi';
-                        else if (title.includes('アプリ') || title.includes('クーポン') || url.includes('app')) cat = 'app';
-                        else if (title.includes('セール') || title.includes('割引')) cat = 'sale';
-                        
-                        return { ...item, category: cat };
-                    });
-
-                    if (allCampaigns.length === 0) {
-                        showStatus('現在開催中のプロモーションは見つかりませんでした。');
-                    } else {
-                        statusEl.style.display = 'none'; 
-                        renderCampaigns(); 
-                    }
-                } else { throw new Error('Data fetch failed'); }
-            } catch (error) { showStatus('情報の取得に失敗しました。'); }
+                    allCampaigns = data.data;
+                    statusEl.style.display = 'none';
+                    renderCampaigns();
+                } else {
+                    statusEl.innerHTML = 'データの取得に失敗しました。';
+                }
+            } catch (error) {
+                statusEl.innerHTML = '通信エラーが発生しました。';
+            }
         }
 
+        // --- 本物のカレンダー描画処理 ---
+        function renderCalendar() {
+            if (!calendar) {
+                // 初回のみカレンダーを初期化
+                calendar = new FullCalendar.Calendar(calEl, {
+                    initialView: 'dayGridMonth',
+                    locale: 'ja',
+                    height: 'auto',
+                    headerToolbar: { left: 'prev,next', center: 'title', right: 'today' },
+                    eventClick: function(info) {
+                        window.open(info.event.url, '_blank');
+                        info.jsEvent.preventDefault();
+                    }
+                });
+                calendar.render();
+            }
+
+            // フィルターに合わせてカレンダーに予定をセット
+            calendar.removeAllEvents();
+            const filtered = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            
+            filtered.forEach(item => {
+                if (item.startDate) {
+                    calendar.addEvent({
+                        title: item.title,
+                        start: item.startDate,
+                        end: item.endDate, // GAS側で計算済みの正確な終了日
+                        url: item.url,
+                        backgroundColor: categoryColors[item.category] || categoryColors.other
+                    });
+                }
+            });
+        }
+
+        // --- リスト描画処理 ---
         function renderCampaigns() {
             gridEl.innerHTML = ''; 
-
-            const filteredItems = currentFilter === 'all' 
-                ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            const filteredItems = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
 
             if (filteredItems.length === 0) {
-                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 60px;">該当する情報はありません。</div>';
+                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 40px;">該当する情報はありません。</div>';
                 return;
             }
             
             filteredItems.forEach(item => {
                 const catInfo = categories[item.category] || categories.other;
                 const extractedProduct = extractProductName(item.title);
-                const productHtml = extractedProduct 
-                    ? `<div class="product-highlight"><i class="fa-solid fa-box-open"></i> 対象: ${extractedProduct}</div>` 
-                    : '';
+                const productHtml = extractedProduct ? `<div class="product-highlight"><i class="fa-solid fa-box-open"></i> ${extractedProduct}</div>` : '';
 
                 const card = document.createElement('div');
                 card.className = 'card';
-                
-                // ★ 日付（item.date）を赤い太文字で表示するように変更しています
                 card.innerHTML = `
                     <div class="card-content">
-                        <div class="badge ${catInfo.class}">${catInfo.label}</div>
+                        <span class="badge ${catInfo.class}">${catInfo.label}</span>
                         ${productHtml}
                         <h3 class="card-title">${item.title}</h3>
-                        <div class="card-date"><i class="fa-regular fa-clock"></i> ${item.date || '期間は公式サイトで確認'}</div>
+                        <div class="card-date"><i class="fa-regular fa-calendar"></i> ${item.date}</div>
                     </div>
-                    <div class="card-footer">
-                        <a href="${item.url}" target="_blank" class="official-link">公式サイトで見る</a>
-                    </div>
+                    <a href="${item.url}" target="_blank" class="official-link">公式サイトで見る</a>
                 `;
                 gridEl.appendChild(card);
             });
-        }
-
-        function showLoading() {
-            gridEl.innerHTML = ''; statusEl.style.display = 'block';
-            statusEl.innerHTML = '<p>データを同期中... ⏳</p>';
-        }
-
-        function showStatus(message) {
-            gridEl.innerHTML = ''; statusEl.style.display = 'block';
-            statusEl.innerHTML = `<p>${message}</p>`;
         }
     </script>
 </body>
