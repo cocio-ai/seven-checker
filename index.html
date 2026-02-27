@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #f2f2f7; 
+            /* モダンなiOSライクなカラーパレット */
+            --bg-color: #f2f2f7; /* iOSの背景色に近いグレー */
             --card-bg: #ffffff;
             --text-main: #1c1c1e;
             --text-sub: #8e8e93;
             --border-color: rgba(0, 0, 0, 0.05);
             
-            --c-puraichi: #ff3b30; 
-            --c-app: #ff9500;      
-            --c-sale: #ff2d55;     
-            --c-other: #007aff;    
+            /* カテゴリーカラー（彩度を高めに） */
+            --c-puraichi: #ff3b30; /* Red */
+            --c-app: #ff9500;      /* Orange */
+            --c-sale: #ff2d55;     /* Pink */
+            --c-other: #007aff;    /* Blue */
             
             --shadow-card: 0 8px 24px rgba(0,0,0,0.04);
             --shadow-hover: 0 16px 32px rgba(0,0,0,0.08);
@@ -26,123 +28,133 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-            background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; padding-bottom: 60px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Hiragino Sans", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0; padding: 0; padding-bottom: 60px;
         }
 
-        /* ヘッダー */
+        /* ヘッダー：すりガラス効果（Glassmorphism） */
         .app-header {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 20px 15px 15px; border-bottom: 1px solid var(--border-color);
-        }
-        .header-top {
-            display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 16px; padding: 0 10px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px 15px 15px;
+            border-bottom: 1px solid var(--border-color);
         }
         .app-title {
-            margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px;
+            margin: 0 0 16px 0; text-align: center;
+            font-size: 22px; font-weight: 800; letter-spacing: 0.5px;
             background: linear-gradient(135deg, #00803E, #F39200, #E60012);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* 表示切り替えボタン（リスト/カレンダー） */
-        .view-controls { display: flex; background: #e5e5ea; border-radius: 8px; padding: 2px; }
-        .view-btn {
-            border: none; background: transparent; color: var(--text-sub); padding: 6px 12px;
-            border-radius: 6px; font-size: 14px; cursor: pointer; transition: 0.2s;
+        /* フィルタータブ（ピル型デザイン） */
+        .filter-container {
+            display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 600px; margin: 0 auto;
         }
-        .view-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-
-        /* フィルタータブ */
-        .filter-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 600px; margin: 0 auto; }
         .filter-btn {
-            border: none; background: #e5e5ea; color: var(--text-sub); padding: 8px 16px; border-radius: 100px;
-            font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center;
+            border: none; background: #e5e5ea; color: var(--text-sub);
+            padding: 10px 18px; border-radius: 100px;
+            font-weight: 700; font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; align-items: center;
         }
-        .filter-btn.active { background: #1c1c1e; color: #fff; transform: scale(1.05); }
+        .filter-btn i { margin-right: 6px; font-size: 14px; }
+        
+        /* アクティブ時の色 */
+        .filter-btn.active { background: #1c1c1e; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: scale(1.05); }
+        .filter-btn.puraichi.active { background: var(--c-puraichi); box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3); }
+        .filter-btn.app.active { background: var(--c-app); box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3); }
+        .filter-btn.sale.active { background: var(--c-sale); box-shadow: 0 4px 12px rgba(255, 45, 85, 0.3); }
+        .filter-btn.other.active { background: var(--c-other); box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3); }
 
+        /* メインコンテンツ */
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        
-        /* リストビュー */
         .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-        
-        /* カレンダービュー（今回はモックアップUI） */
-        .calendar-view { display: none; background: var(--card-bg); border-radius: var(--radius-xl); padding: 40px 20px; text-align: center; box-shadow: var(--shadow-card); }
-        .calendar-view i { font-size: 48px; color: var(--text-sub); margin-bottom: 16px; opacity: 0.5; }
-        .calendar-view h3 { margin: 0 0 10px; font-size: 18px; }
-        .calendar-view p { color: var(--text-sub); font-size: 14px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
 
-        /* カードデザイン */
+        /* カードデザイン（フローティング） */
         .card {
-            background: var(--card-bg); border-radius: var(--radius-xl); box-shadow: var(--shadow-card);
-            transition: all 0.3s; display: flex; flex-direction: column; overflow: hidden;
+            background: var(--card-bg); border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; position: relative;
+            border: 1px solid rgba(255,255,255,0.8);
+            overflow: hidden;
         }
-        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-        .card-content { padding: 24px; flex-grow: 1; }
+        .card:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--shadow-hover); }
+
+        .card-content { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; }
         
+        /* エレガントなバッジ */
         .badge {
-            display: inline-flex; padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 800;
-            color: white; margin-bottom: 12px; letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; padding: 6px 14px;
+            border-radius: 100px; font-size: 12px; font-weight: 800; color: white;
+            margin-bottom: 16px; align-self: flex-start;
+            letter-spacing: 0.5px;
         }
         .badge.puraichi { background: var(--c-puraichi); }
         .badge.app { background: var(--c-app); }
         .badge.sale { background: var(--c-sale); }
         .badge.other { background: var(--c-other); }
 
-        /* 商品名ハイライト機能（AI風抽出） */
-        .product-highlight {
-            display: inline-flex; align-items: center; background: rgba(0, 122, 255, 0.1); color: var(--c-other);
-            padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 12px; width: 100%;
-        }
-        .product-highlight i { margin-right: 6px; }
-
-        .card-title { font-size: 16px; font-weight: 700; margin: 0 0 12px 0; line-height: 1.4; }
-        .card-date { font-size: 12px; color: var(--text-sub); margin-bottom: 16px; font-weight: 500;}
+        .card-title { font-size: 18px; font-weight: 700; margin: 0 0 12px 0; line-height: 1.4; color: var(--text-main); }
+        .card-date { font-size: 13px; color: var(--text-sub); margin-bottom: 16px; font-weight: 500; display: flex; align-items: center;}
+        .card-date i { margin-right: 6px; }
         
+        .card-desc {
+            font-size: 14px; color: var(--text-sub); line-height: 1.6; flex-grow: 1;
+        }
+
+        /* アクションボタン（下部） */
         .card-footer { padding: 0 24px 24px; }
         .official-link {
-            display: flex; justify-content: center; background: #f2f2f7; color: var(--text-main);
-            text-decoration: none; font-size: 14px; font-weight: 700; padding: 12px; border-radius: var(--radius-lg);
+            display: flex; align-items: center; justify-content: center; width: 100%;
+            background: #f2f2f7; color: var(--text-main);
+            text-decoration: none; font-size: 14px; font-weight: 700;
+            padding: 12px 0; border-radius: var(--radius-lg);
+            transition: all 0.2s;
         }
-        
+        .official-link i { margin-left: 8px; font-size: 12px; transition: transform 0.2s; }
+        .official-link:hover { background: #e5e5ea; }
+        .official-link:hover i { transform: translateX(3px); }
+
+        /* ローディング */
         .status-message { text-align: center; padding: 60px 20px; font-size: 15px; color: var(--text-sub); font-weight: 500;}
+        .spinner {
+            width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.05);
+            border-top-color: var(--text-main); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 20px auto;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <header class="app-header">
-        <div class="header-top">
-            <h1 class="app-title">Promo Finder</h1>
-            <div class="view-controls">
-                <button id="btn-list" class="view-btn active" onclick="switchView('list')"><i class="fa-solid fa-list"></i></button>
-                <button id="btn-cal" class="view-btn" onclick="switchView('calendar')"><i class="fa-regular fa-calendar-days"></i></button>
-            </div>
-        </div>
+        <h1 class="app-title">7-Eleven Promo Finder</h1>
         <div class="filter-container">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn puraichi" data-filter="puraichi">プライチ</button>
-            <button class="filter-btn app" data-filter="app">アプリ</button>
-            <button class="filter-btn sale" data-filter="sale">セール</button>
-            <button class="filter-btn other" data-filter="other">他</button>
+            <button class="filter-btn puraichi" data-filter="puraichi"><i class="fa-solid fa-gift"></i>プライチ</button>
+            <button class="filter-btn app" data-filter="app"><i class="fa-solid fa-mobile-screen"></i>アプリ</button>
+            <button class="filter-btn sale" data-filter="sale"><i class="fa-solid fa-tag"></i>セール</button>
+            <button class="filter-btn other" data-filter="other"><i class="fa-solid fa-sparkles"></i>キャンペーン・他</button>
         </div>
     </header>
 
     <main class="container">
         <div id="campaign-grid" class="campaign-grid"></div>
-        
-        <div id="calendar-view" class="calendar-view">
-            <i class="fa-regular fa-calendar-xmark"></i>
-            <h3>カレンダー機能について</h3>
-            <p>カレンダーに予定を並べるためには、システムが「正確な日付データ（2024-03-01など）」を読み取る必要があります。<br><br>現在セブンイレブンのサイトから自動取得できているのは「文章（タイトル）」のみのため、将来的にGASの裏側を大幅にアップデート（AI連動など）することで実現可能になります！</p>
-        </div>
-
         <div id="status-message" class="status-message"></div>
     </main>
 
     <script>
-        // 公開用GAS URL
+        // GAS URL
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
 
+        // カテゴリー設定（4種類に統合）
         const categories = {
             puraichi: { label: 'プライチ', class: 'puraichi' },
             app: { label: 'アプリ限定', class: 'app' },
@@ -154,7 +166,6 @@
         let currentFilter = 'all'; 
 
         const gridEl = document.getElementById('campaign-grid');
-        const calEl = document.getElementById('calendar-view');
         const statusEl = document.getElementById('status-message');
         const filterBtns = document.querySelectorAll('.filter-btn');
 
@@ -162,45 +173,15 @@
 
         function init() { fetchData(); setupFilters(); }
 
-        // リストとカレンダーの表示切り替え
-        function switchView(view) {
-            document.getElementById('btn-list').classList.toggle('active', view === 'list');
-            document.getElementById('btn-cal').classList.toggle('active', view === 'calendar');
-            
-            if (view === 'list') {
-                calEl.style.display = 'none';
-                gridEl.style.display = 'grid';
-                renderCampaigns();
-            } else {
-                gridEl.style.display = 'none';
-                statusEl.style.display = 'none';
-                calEl.style.display = 'block';
-            }
-        }
-
         function setupFilters() {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     currentFilter = btn.getAttribute('data-filter');
-                    
-                    // カレンダー表示中にフィルターを押したらリストに戻す
-                    if (calEl.style.display === 'block') switchView('list');
-                    else renderCampaigns();
+                    renderCampaigns();
                 });
             });
-        }
-
-        // 商品名を自動抽出するスマート機能（擬似AI）
-        function extractProductName(text) {
-            // 「」で囲まれた文字を探し出す
-            const matches = text.match(/「(.+?)」/g);
-            if (matches) {
-                // 「」を削除して、複数の場合はスラッシュで繋ぐ
-                return matches.map(m => m.replace(/[「」]/g, '')).join(' / ');
-            }
-            return null; // 見つからない場合
         }
 
         async function fetchData() {
@@ -212,33 +193,39 @@
                 const data = await response.json();
                 
                 if (data.status === 'success' && data.data) {
+                    // キャンペーンとその他を統合し、強力な自動振り分けを実行
                     allCampaigns = data.data.map(item => {
                         const title = item.title || "";
                         const url = item.url || "";
-                        let cat = 'other'; 
+                        let cat = 'other'; // デフォルトは「キャンペーン・他」
                         
-                        if (title.includes('プライチ') || title.includes('1つ買うと') || url.includes('puraichi')) cat = 'puraichi';
-                        else if (title.includes('アプリ') || title.includes('クーポン') || url.includes('app')) cat = 'app';
-                        else if (title.includes('セール') || title.includes('割引')) cat = 'sale';
+                        if (title.includes('プライチ') || title.includes('1つ買うと') || url.includes('puraichi')) {
+                            cat = 'puraichi';
+                        } else if (title.includes('アプリ') || title.includes('クーポン') || url.includes('app')) {
+                            cat = 'app';
+                        } else if (title.includes('セール') || title.includes('割引') || title.includes('値引') || title.includes('%OFF')) {
+                            cat = 'sale';
+                        }
                         
                         return { ...item, category: cat };
                     });
 
                     if (allCampaigns.length === 0) {
-                        showStatus('現在開催中のプロモーションは見つかりませんでした。');
+                        showStatus('現在開催中のプロモーションは見つかりませんでした。', 'fa-info-circle');
                     } else {
                         statusEl.style.display = 'none'; 
                         renderCampaigns(); 
                     }
                 } else { throw new Error('Data fetch failed'); }
-            } catch (error) { showStatus('情報の取得に失敗しました。'); }
+            } catch (error) { showStatus('情報の取得に失敗しました。<br>リロードしてください。', 'fa-triangle-exclamation'); }
         }
 
         function renderCampaigns() {
             gridEl.innerHTML = ''; 
 
             const filteredItems = currentFilter === 'all' 
-                ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+                ? allCampaigns 
+                : allCampaigns.filter(item => item.category === currentFilter);
 
             if (filteredItems.length === 0) {
                 gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 60px;">該当する情報はありません。</div>';
@@ -247,25 +234,19 @@
             
             filteredItems.forEach(item => {
                 const catInfo = categories[item.category] || categories.other;
-                
-                // ここで商品名を抽出！
-                const extractedProduct = extractProductName(item.title);
-                // 抽出できた場合のみ、商品名ハイライトのHTMLブロックを作成
-                const productHtml = extractedProduct 
-                    ? `<div class="product-highlight"><i class="fa-solid fa-box-open"></i> 対象: ${extractedProduct}</div>` 
-                    : '';
-
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
                     <div class="card-content">
                         <div class="badge ${catInfo.class}">${catInfo.label}</div>
-                        ${productHtml}
                         <h3 class="card-title">${item.title}</h3>
                         <div class="card-date"><i class="fa-regular fa-clock"></i> 期間限定</div>
+                        <div class="card-desc">${item.desc}</div>
                     </div>
                     <div class="card-footer">
-                        <a href="${item.url}" target="_blank" class="official-link">公式サイトで見る</a>
+                        <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="official-link">
+                            公式サイトで見る <i class="fa-solid fa-chevron-right"></i>
+                        </a>
                     </div>
                 `;
                 gridEl.appendChild(card);
@@ -274,12 +255,12 @@
 
         function showLoading() {
             gridEl.innerHTML = ''; statusEl.style.display = 'block';
-            statusEl.innerHTML = '<p>データを同期中... ⏳</p>';
+            statusEl.innerHTML = '<div class="spinner"></div><p>Syncing data...</p>';
         }
 
-        function showStatus(message) {
+        function showStatus(message, iconClass) {
             gridEl.innerHTML = ''; statusEl.style.display = 'block';
-            statusEl.innerHTML = `<p>${message}</p>`;
+            statusEl.innerHTML = `<i class="fa-solid ${iconClass}" style="font-size:32px; color:#d1d1d6; margin-bottom:16px;"></i><p>${message}</p>`;
         }
     </script>
 </body>
