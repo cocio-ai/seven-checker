@@ -1,1176 +1,359 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>7-11 Promo</title>
-<style>
-  :root {
-    --seven-red: #e31837;
-    --seven-green: #007a3d;
-    --seven-orange: #ff6600;
-    --seven-stripe-red: #e31837;
-    --seven-stripe-green: #007a3d;
-    --seven-stripe-orange: #ff6600;
-    --bg: #f5f5f5;
-    --card-bg: #ffffff;
-    --text: #1a1a1a;
-    --text-muted: #666;
-    --border: #e0e0e0;
-    --shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-
-- { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-font-family: -apple-system, ‘Hiragino Sans’, ‘Noto Sans JP’, sans-serif;
-background: var(–bg);
-color: var(–text);
-min-height: 100vh;
-}
-
-/* Header */
-header {
-background: #fff;
-border-bottom: 3px solid transparent;
-border-image: linear-gradient(90deg, var(–seven-red) 33%, var(–seven-green) 33% 66%, var(–seven-orange) 66%) 1;
-position: sticky;
-top: 0;
-z-index: 100;
-box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.header-inner {
-max-width: 900px;
-margin: 0 auto;
-padding: 12px 16px;
-display: flex;
-align-items: center;
-gap: 12px;
-}
-
-.logo {
-font-size: 22px;
-font-weight: 900;
-letter-spacing: -0.5px;
-}
-.logo .seven { color: var(–seven-red); }
-.logo .eleven { color: var(–seven-green); }
-.logo .promo { color: var(–seven-orange); font-size: 13px; font-weight: 700; margin-left: 2px; }
-
-.header-subtitle {
-font-size: 11px;
-color: var(–text-muted);
-margin-top: 2px;
-}
-
-/* Main */
-main {
-max-width: 900px;
-margin: 0 auto;
-padding: 16px;
-}
-
-/* Area selector */
-.area-section {
-background: #fff;
-border-radius: 12px;
-padding: 14px 16px;
-margin-bottom: 14px;
-box-shadow: var(–shadow);
-}
-
-.area-section label {
-font-size: 12px;
-font-weight: 700;
-color: var(–text-muted);
-text-transform: uppercase;
-letter-spacing: 0.5px;
-display: block;
-margin-bottom: 8px;
-}
-
-.area-select {
-width: 100%;
-padding: 10px 12px;
-border: 2px solid var(–border);
-border-radius: 8px;
-font-size: 15px;
-background: #fff;
-color: var(–text);
-cursor: pointer;
-outline: none;
-appearance: none;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23666’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 12px center;
-}
-.area-select:focus { border-color: var(–seven-red); }
-
-/* Quick links */
-.quick-links {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 14px;
-}
-
-.quick-link {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 14px 12px;
-background: #fff;
-border-radius: 12px;
-text-decoration: none;
-color: var(–text);
-box-shadow: var(–shadow);
-font-size: 13px;
-font-weight: 700;
-gap: 4px;
-border: 2px solid transparent;
-transition: border-color 0.15s;
-}
-.quick-link:hover { border-color: var(–seven-red); }
-.quick-link .ql-area { font-size: 10px; color: var(–text-muted); font-weight: 400; }
-
-/* AI Analyze Panel */
-.ai-panel {
-background: linear-gradient(135deg, #fff9f9 0%, #fff 100%);
-border: 2px solid #ffdde0;
-border-radius: 12px;
-padding: 14px 16px;
-margin-bottom: 14px;
-box-shadow: var(–shadow);
-}
-
-.ai-panel-header {
-display: flex;
-align-items: center;
-gap: 8px;
-margin-bottom: 10px;
-}
-
-.ai-badge {
-background: var(–seven-red);
-color: #fff;
-font-size: 10px;
-font-weight: 800;
-padding: 3px 7px;
-border-radius: 20px;
-letter-spacing: 0.3px;
-}
-
-.ai-panel-title {
-font-size: 14px;
-font-weight: 700;
-}
-
-.ai-input-row {
-display: flex;
-gap: 8px;
-margin-bottom: 10px;
-}
-
-.ai-url-input {
-flex: 1;
-padding: 10px 12px;
-border: 2px solid var(–border);
-border-radius: 8px;
-font-size: 13px;
-outline: none;
-min-width: 0;
-}
-.ai-url-input:focus { border-color: var(–seven-red); }
-
-.ai-btn {
-background: var(–seven-red);
-color: #fff;
-border: none;
-border-radius: 8px;
-padding: 10px 16px;
-font-size: 13px;
-font-weight: 700;
-cursor: pointer;
-white-space: nowrap;
-transition: opacity 0.15s;
-}
-.ai-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.ai-btn:not(:disabled):hover { opacity: 0.85; }
-
-.ai-hint {
-font-size: 11px;
-color: var(–text-muted);
-margin-bottom: 8px;
-}
-
-/* AI result card */
-.ai-result {
-background: #fff;
-border-radius: 10px;
-border: 1px solid var(–border);
-overflow: hidden;
-margin-top: 10px;
-display: none;
-}
-.ai-result.visible { display: block; }
-
-.ai-result-header {
-background: var(–seven-red);
-color: #fff;
-padding: 10px 14px;
-font-size: 13px;
-font-weight: 700;
-display: flex;
-align-items: center;
-gap: 6px;
-}
-
-.ai-result-body {
-padding: 14px;
-}
-
-.ai-detail-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 12px;
-}
-
-.ai-detail-item {
-background: #f8f8f8;
-border-radius: 8px;
-padding: 10px 12px;
-}
-
-.ai-detail-label {
-font-size: 10px;
-color: var(–text-muted);
-font-weight: 700;
-text-transform: uppercase;
-letter-spacing: 0.3px;
-margin-bottom: 3px;
-}
-
-.ai-detail-value {
-font-size: 14px;
-font-weight: 700;
-color: var(–text);
-}
-
-.ai-detail-value.red { color: var(–seven-red); }
-.ai-detail-value.green { color: var(–seven-green); }
-.ai-detail-value.orange { color: var(–seven-orange); }
-
-.ai-summary {
-font-size: 13px;
-line-height: 1.6;
-color: var(–text);
-background: #f0f7ff;
-border-radius: 8px;
-padding: 10px 12px;
-border-left: 3px solid #2196f3;
-}
-
-/* Products in AI result */
-.ai-products {
-margin-top: 10px;
-}
-
-.ai-products-title {
-font-size: 11px;
-font-weight: 700;
-color: var(–text-muted);
-text-transform: uppercase;
-margin-bottom: 6px;
-}
-
-.ai-product-tag {
-display: inline-block;
-background: #f0f0f0;
-border-radius: 20px;
-padding: 4px 10px;
-font-size: 12px;
-margin: 3px 3px 3px 0;
-font-weight: 500;
-}
-
-/* Campaign list section */
-.section-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 10px;
-}
-
-.section-title {
-font-size: 16px;
-font-weight: 800;
-display: flex;
-align-items: center;
-gap: 6px;
-}
-
-/* Filter tabs */
-.filter-tabs {
-display: flex;
-gap: 6px;
-overflow-x: auto;
-padding-bottom: 2px;
-margin-bottom: 12px;
-scrollbar-width: none;
-}
-.filter-tabs::-webkit-scrollbar { display: none; }
-
-.filter-tab {
-flex-shrink: 0;
-padding: 7px 14px;
-border-radius: 20px;
-border: 2px solid var(–border);
-background: #fff;
-font-size: 13px;
-font-weight: 600;
-cursor: pointer;
-transition: all 0.15s;
-white-space: nowrap;
-color: var(–text);
-}
-
-.filter-tab.active {
-background: var(–seven-red);
-border-color: var(–seven-red);
-color: #fff;
-}
-
-/* Campaign cards */
-.campaigns-grid {
-display: flex;
-flex-direction: column;
-gap: 10px;
-}
-
-.campaign-card {
-background: #fff;
-border-radius: 12px;
-overflow: hidden;
-box-shadow: var(–shadow);
-border: 1px solid var(–border);
-transition: transform 0.15s, box-shadow 0.15s;
-}
-.campaign-card:active { transform: scale(0.99); }
-
-.card-top {
-display: flex;
-gap: 0;
-}
-
-.card-accent {
-width: 5px;
-flex-shrink: 0;
-}
-.card-accent.praitchi { background: var(–seven-red); }
-.card-accent.app { background: #5c6bc0; }
-.card-accent.sale { background: var(–seven-orange); }
-.card-accent.other { background: var(–seven-green); }
-
-.card-body {
-flex: 1;
-padding: 12px 14px;
-min-width: 0;
-}
-
-.card-badges {
-display: flex;
-gap: 5px;
-flex-wrap: wrap;
-margin-bottom: 6px;
-}
-
-.badge {
-font-size: 10px;
-font-weight: 700;
-padding: 3px 8px;
-border-radius: 20px;
-display: inline-flex;
-align-items: center;
-gap: 3px;
-}
-.badge.praitchi { background: #ffeef0; color: var(–seven-red); }
-.badge.app { background: #eef0ff; color: #5c6bc0; }
-.badge.sale { background: #fff3e8; color: var(–seven-orange); }
-.badge.other { background: #eef7ee; color: var(–seven-green); }
-
-.card-title {
-font-size: 15px;
-font-weight: 800;
-margin-bottom: 5px;
-line-height: 1.3;
-display: -webkit-box;
--webkit-line-clamp: 2;
--webkit-box-orient: vertical;
-overflow: hidden;
-}
-
-/* Schedule row */
-.card-schedule {
-display: flex;
-align-items: center;
-gap: 4px;
-margin-bottom: 6px;
-flex-wrap: wrap;
-}
-
-.schedule-pill {
-font-size: 11px;
-font-weight: 600;
-padding: 3px 8px;
-border-radius: 20px;
-display: inline-flex;
-align-items: center;
-gap: 3px;
-}
-
-.schedule-pill.start {
-background: #e8f5e9;
-color: #2e7d32;
-}
-
-.schedule-pill.end {
-background: #fce4ec;
-color: #c62828;
-}
-
-.schedule-pill.period {
-background: #fff3e0;
-color: #e65100;
-}
-
-.schedule-arrow {
-color: var(–text-muted);
-font-size: 11px;
-}
-
-/* Days remaining */
-.days-remaining {
-display: inline-flex;
-align-items: center;
-gap: 3px;
-font-size: 11px;
-font-weight: 700;
-padding: 3px 8px;
-border-radius: 20px;
-}
-.days-remaining.urgent { background: #ffeef0; color: var(–seven-red); }
-.days-remaining.soon { background: #fff3e0; color: var(–seven-orange); }
-.days-remaining.ok { background: #e8f5e9; color: var(–seven-green); }
-.days-remaining.ended { background: #f0f0f0; color: #999; }
-
-/* Card footer */
-.card-footer {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 8px 14px 10px 19px;
-border-top: 1px solid #f0f0f0;
-gap: 8px;
-}
-
-.card-area {
-font-size: 11px;
-color: var(–text-muted);
-}
-
-.card-actions {
-display: flex;
-gap: 6px;
-align-items: center;
-}
-
-.card-link {
-font-size: 12px;
-font-weight: 700;
-color: var(–seven-red);
-text-decoration: none;
-padding: 5px 10px;
-border: 1.5px solid #ffdde0;
-border-radius: 6px;
-background: #fff9fa;
-transition: background 0.15s;
-}
-.card-link:hover { background: #ffeef0; }
-
-.card-ai-btn {
-font-size: 12px;
-font-weight: 700;
-color: #fff;
-padding: 5px 10px;
-border: none;
-border-radius: 6px;
-background: #333;
-cursor: pointer;
-transition: background 0.15s;
-display: flex;
-align-items: center;
-gap: 4px;
-}
-.card-ai-btn:hover { background: #555; }
-.card-ai-btn.analyzing { background: #888; cursor: not-allowed; }
-
-/* AI inline result */
-.card-ai-result {
-margin: 0 14px 10px 19px;
-background: #f8f9ff;
-border-radius: 8px;
-padding: 10px 12px;
-border: 1px solid #e0e4ff;
-display: none;
-font-size: 12px;
-line-height: 1.6;
-}
-.card-ai-result.visible { display: block; }
-
-.card-ai-result-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 6px;
-margin-bottom: 8px;
-}
-
-.car-item {
-background: #fff;
-border-radius: 6px;
-padding: 6px 8px;
-border: 1px solid #eee;
-}
-
-.car-label {
-font-size: 9px;
-text-transform: uppercase;
-letter-spacing: 0.3px;
-color: var(–text-muted);
-font-weight: 700;
-margin-bottom: 2px;
-}
-
-.car-value {
-font-size: 12px;
-font-weight: 700;
-color: var(–text);
-}
-
-.car-value.red { color: var(–seven-red); }
-.car-value.green { color: var(–seven-green); }
-.car-value.orange { color: var(–seven-orange); }
-
-.card-ai-summary {
-font-size: 11px;
-color: #444;
-line-height: 1.6;
-}
-
-/* Loading states */
-.loading-indicator {
-text-align: center;
-padding: 32px;
-color: var(–text-muted);
-font-size: 14px;
-}
-
-.spinner {
-display: inline-block;
-width: 20px;
-height: 20px;
-border: 2px solid #eee;
-border-top-color: var(–seven-red);
-border-radius: 50%;
-animation: spin 0.7s linear infinite;
-vertical-align: middle;
-margin-right: 6px;
-}
-
-@keyframes spin {
-to { transform: rotate(360deg); }
-}
-
-/* Pulse animation for AI badge */
-@keyframes pulse {
-0%, 100% { opacity: 1; }
-50% { opacity: 0.5; }
-}
-.pulsing { animation: pulse 1s ease-in-out infinite; }
-
-/* Empty state */
-.empty-state {
-text-align: center;
-padding: 40px 20px;
-color: var(–text-muted);
-}
-
-/* Toast */
-.toast {
-position: fixed;
-bottom: 20px;
-left: 50%;
-transform: translateX(-50%) translateY(80px);
-background: #333;
-color: #fff;
-padding: 10px 20px;
-border-radius: 20px;
-font-size: 13px;
-font-weight: 600;
-z-index: 9999;
-transition: transform 0.3s ease;
-white-space: nowrap;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-@media (max-width: 480px) {
-.ai-detail-grid { grid-template-columns: 1fr 1fr; }
-.card-ai-result-grid { grid-template-columns: 1fr 1fr; }
-}
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>7-Eleven Promo Finder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <style>
+        :root {
+            --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #1c1c1e; --text-sub: #8e8e93;
+            --c-puraichi: #ff3b30; --c-app: #ff9500; --c-sale: #ff2d55; --c-other: #007aff; 
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 16px 32px rgba(0,0,0,0.1);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding-bottom: 80px; }
+
+        .app-header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            padding: 16px 20px; border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .app-title { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
+        .app-title i { color: #00803E; margin-right: 6px; }
+        
+        .view-controls { display: flex; background: #e5e5ea; border-radius: 10px; padding: 3px; }
+        .view-btn { border: none; background: transparent; color: var(--text-sub); padding: 8px 16px; border-radius: 8px; font-size: 15px; cursor: pointer; transition: 0.2s; }
+        .view-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+
+        .dashboard { max-width: 1200px; margin: 24px auto 16px; padding: 0 20px; }
+        .section-title { font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .region-selector { position: relative; margin-bottom: 16px; }
+        .region-selector select {
+            width: 100%; appearance: none; background: var(--card-bg); border: 1px solid rgba(0,0,0,0.08); border-radius: 14px;
+            padding: 14px 40px 14px 16px; font-size: 16px; font-weight: 700; color: var(--text-main);
+            box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.2s;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 16px center; background-size: 18px;
+        }
+        .region-selector select:focus { outline: none; border-color: #007aff; box-shadow: 0 0 0 3px rgba(0,122,255,0.2); }
+
+        .new-product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .new-card {
+            display: flex; flex-direction: column; justify-content: center; padding: 20px 16px;
+            border-radius: 20px; text-decoration: none; color: white; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--shadow-md); position: relative; overflow: hidden;
+        }
+        .new-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .new-card::after { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 16px; opacity: 0.5; font-size: 14px; transition: transform 0.3s; }
+        .new-card:hover::after { transform: translateX(4px); opacity: 1; }
+        .new-card.this-week { background: linear-gradient(135deg, #34c759 0%, #28a745 100%); }
+        .new-card.next-week { background: linear-gradient(135deg, #ff9500 0%, #ff8c00 100%); }
+        .new-card i.main-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.9; }
+        .new-card .sub-text { font-size: 11px; font-weight: 700; opacity: 0.8; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .new-card .main-text { font-size: 16px; font-weight: 800; }
+
+        .filter-container { display: flex; gap: 8px; justify-content: flex-start; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
+        .filter-container::-webkit-scrollbar { display: none; }
+        .filter-btn {
+            border: none; background: #e5e5ea; color: var(--text-sub); padding: 10px 18px; border-radius: 100px;
+            font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+        }
+        .filter-btn.active { background: #1c1c1e; color: #fff; transform: scale(1.03); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        .card { background: var(--card-bg); border-radius: 20px; box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s; border: 1px solid rgba(0,0,0,0.03); }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .card-content { padding: 24px; flex-grow: 1; }
+        
+        .badges-wrapper { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .badge { padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; color: white; letter-spacing: 0.5px;}
+        .badge.puraichi { background: var(--c-puraichi); } .badge.app { background: var(--c-app); }
+        .badge.sale { background: var(--c-sale); } .badge.other { background: var(--c-other); }
+        .badge.region { background: #1c1c1e; color: #ffd60a; }
+
+        .product-highlight { display: inline-flex; align-items: center; background: rgba(0, 122, 255, 0.08); color: var(--c-other); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; margin-bottom: 12px; width: 100%; border: 1px solid rgba(0, 122, 255, 0.1);}
+        .product-highlight i { margin-right: 6px; }
+        
+        .card-title { font-size: 16px; font-weight: 800; margin: 0 0 12px 0; line-height: 1.5; color: var(--text-main); }
+        .card-date { font-size: 13px; color: #ff3b30; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; }
+        .card-date i { margin-right: 6px; }
+        
+        .card-footer { padding: 0 24px 24px; }
+        .official-link { display: flex; justify-content: center; align-items: center; background: #f2f2f7; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 700; padding: 14px; border-radius: 12px; transition: 0.2s; }
+        .official-link:hover { background: #e5e5ea; }
+        .official-link i { margin-left: 8px; font-size: 12px; }
+
+        #calendar-view { display: none; background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow-sm); }
+        .fc-toolbar-title { font-size: 18px !important; font-weight: 800; }
+        .fc-event { cursor: pointer; border: none; padding: 3px 6px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        
+        .status-message { text-align: center; padding: 60px 20px; color: var(--text-sub); font-weight: 600; }
+        .spinner { width: 36px; height: 36px; border: 3px solid rgba(0,0,0,0.1); border-top-color: #00803E; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px auto; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div>
-      <div class="logo">
-        <span class="seven">7</span><span class="eleven">-ELEVEn</span><span class="promo">PROMO</span>
-      </div>
-      <div class="header-subtitle">キャンペーン・スケジュール管理 AI解析付き</div>
+    <header class="app-header">
+        <div class="header-top">
+            <h1 class="app-title"><i class="fa-solid fa-store"></i>7-11 Promo</h1>
+            <div class="view-controls">
+                <button id="btn-list" class="view-btn active" onclick="switchView('list')"><i class="fa-solid fa-list"></i></button>
+                <button id="btn-cal" class="view-btn" onclick="switchView('calendar')"><i class="fa-regular fa-calendar-days"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <div class="section-title">エリアを選択</div>
+        
+        <div class="region-selector">
+            <select id="region-select">
+                <option value="all" selected>全国の情報を表示</option>
+                <option value="hokkaido">北海道</option>
+                <option value="tohoku">東北</option>
+                <option value="kanto">関東</option>
+                <option value="koshinetsu">甲信越・北陸</option>
+                <option value="tokai">東海（愛知・岐阜・三重・静岡）</option>
+                <option value="kinki">近畿</option>
+                <option value="chugoku">中国・四国</option>
+                <option value="kyushu">九州・沖縄</option>
+            </select>
+        </div>
+
+        <div class="new-product-grid">
+            <a href="https://www.sej.co.jp/products/a/thisweek/" target="_blank" rel="noopener noreferrer" id="link-this-week" class="new-card this-week">
+                <i class="fa-solid fa-box-open main-icon"></i>
+                <div class="sub-text" id="label-this">全国エリア</div>
+                <div class="main-text">今週の新商品</div>
+            </a>
+            <a href="https://www.sej.co.jp/products/a/nextweek/" target="_blank" rel="noopener noreferrer" id="link-next-week" class="new-card next-week">
+                <i class="fa-solid fa-truck-fast main-icon"></i>
+                <div class="sub-text" id="label-next">全国エリア</div>
+                <div class="main-text">来週の新商品</div>
+            </a>
+        </div>
+
+        <div class="section-title" style="margin-top: 24px;">キャンペーン一覧</div>
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">すべて表示</button>
+            <button class="filter-btn" data-filter="puraichi">🎁 プライチ</button>
+            <button class="filter-btn" data-filter="app">📱 アプリ限定</button>
+            <button class="filter-btn" data-filter="sale">🏷️ セール</button>
+            <button class="filter-btn" data-filter="other">🌟 キャンペーン・他</button>
+        </div>
     </div>
-  </div>
-</header>
 
-<main>
-
-  <!-- Area Selector -->
-
-  <div class="area-section">
-    <label>📍 エリアを選択</label>
-    <select class="area-select" id="areaSelect">
-      <option value="all">全国の情報を表示</option>
-      <option value="hokkaido">北海道</option>
-      <option value="tohoku">東北</option>
-      <option value="kanto">関東</option>
-      <option value="koshinetsu">甲信越・北陸</option>
-      <option value="tokai">東海（愛知・岐阜・三重・静岡）</option>
-      <option value="kinki">近畿</option>
-      <option value="chugoku">中国・四国</option>
-      <option value="kyushu">九州・沖縄</option>
-    </select>
-  </div>
-
-  <!-- Quick Links -->
-
-  <div class="quick-links">
-    <a class="quick-link" href="https://www.sej.co.jp/products/a/thisweek/" target="_blank">
-      <span style="font-size:20px">🆕</span>
-      <span>今週の新商品</span>
-      <span class="ql-area">全国エリア</span>
-    </a>
-    <a class="quick-link" href="https://www.sej.co.jp/products/a/nextweek/" target="_blank">
-      <span style="font-size:20px">📅</span>
-      <span>来週の新商品</span>
-      <span class="ql-area">全国エリア</span>
-    </a>
-  </div>
-
-  <!-- AI Analyze Panel -->
-
-  <div class="ai-panel">
-    <div class="ai-panel-header">
-      <span class="ai-badge">✨ AI</span>
-      <span class="ai-panel-title">キャンペーン詳細を自動解析</span>
-    </div>
-    <div class="ai-hint">セブンイレブンのキャンペーンURLを貼ると、発売日・終売日・対象商品などをAIが自動で抽出します</div>
-    <div class="ai-input-row">
-      <input class="ai-url-input" id="aiUrlInput" type="url" placeholder="https://www.sej.co.jp/cmp/..." />
-      <button class="ai-btn" id="aiAnalyzeBtn" onclick="analyzeUrl()">解析</button>
-    </div>
-    <div id="aiResult" class="ai-result">
-      <div class="ai-result-header">
-        <span>✨</span>
-        <span id="aiResultTitle">解析結果</span>
-      </div>
-      <div class="ai-result-body">
-        <div class="ai-detail-grid" id="aiDetailGrid"></div>
-        <div class="ai-summary" id="aiSummaryText"></div>
-        <div class="ai-products" id="aiProductsSection" style="display:none">
-          <div class="ai-products-title">対象商品</div>
-          <div id="aiProductTags"></div>
+    <main class="container">
+        <div id="campaign-grid" class="campaign-grid"></div>
+        <div id="calendar-view"></div>
+        <div id="status-message" class="status-message">
+            <div class="spinner"></div>
+            データを同期中...
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Campaign List -->
-
-  <div class="section-header">
-    <div class="section-title">📋 キャンペーン一覧</div>
-  </div>
-
-  <!-- Filter Tabs -->
-
-  <div class="filter-tabs" id="filterTabs">
-    <button class="filter-tab active" onclick="setFilter('all', this)">すべて表示</button>
-    <button class="filter-tab" onclick="setFilter('praitchi', this)">🎁 プライチ</button>
-    <button class="filter-tab" onclick="setFilter('app', this)">📱 アプリ限定</button>
-    <button class="filter-tab" onclick="setFilter('sale', this)">🏷️ セール</button>
-    <button class="filter-tab" onclick="setFilter('other', this)">🌟 キャンペーン・他</button>
-  </div>
-
-  <!-- Cards -->
-
-  <div class="campaigns-grid" id="campaignsGrid">
-    <div class="loading-indicator"><span class="spinner"></span>データを同期中...</div>
-  </div>
-
-</main>
-
-<div class="toast" id="toast"></div>
-
-<script>
-// ============================================================
-// DATA
-// ============================================================
-
-const today = new Date();
-today.setHours(0,0,0,0);
-
-function parseDate(str) {
-  if (!str) return null;
-  const m = str.match(/(\d{4})[\/\-年](\d{1,2})[\/\-月](\d{1,2})/);
-  if (!m) return null;
-  return new Date(parseInt(m[1]), parseInt(m[2])-1, parseInt(m[3]));
-}
-
-function formatDate(d) {
-  if (!d) return null;
-  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function daysUntil(d) {
-  if (!d) return null;
-  const diff = Math.ceil((d - today) / 86400000);
-  return diff;
-}
-
-// Campaigns data (will be populated with AI-enriched data)
-const campaigns = [
-  {
-    id: 1,
-    type: 'praitchi',
-    title: '冬のプライチ！セブンカフェ Lサイズコーヒー',
-    area: 'all',
-    url: 'https://www.sej.co.jp/cmp/index.html',
-    startDate: '2025/01/14',
-    endDate: '2025/01/20',
-    scheduleLabel: '週替わり',
-    products: ['セブンカフェ Lコーヒー'],
-    aiAnalyzed: false,
-  },
-  {
-    id: 2,
-    type: 'app',
-    title: '7payアプリ限定！対象商品200円引きクーポン',
-    area: 'all',
-    url: 'https://www.sej.co.jp/cmp/index.html',
-    startDate: '2025/01/10',
-    endDate: '2025/01/31',
-    scheduleLabel: '月内有効',
-    products: ['対象商品全般'],
-    aiAnalyzed: false,
-  },
-  {
-    id: 3,
-    type: 'sale',
-    title: '毎週火・水曜日はサラダ・デリ20%OFF！',
-    area: 'all',
-    url: 'https://www.sej.co.jp/cmp/index.html',
-    startDate: '2025/01/01',
-    endDate: '2025/01/31',
-    scheduleLabel: '火・水曜限定',
-    products: ['サラダ各種', 'デリカ各種'],
-    aiAnalyzed: false,
-  },
-  {
-    id: 4,
-    type: 'praitchi',
-    title: 'プライチ対象！チルドカップ麺 辛旨系人気商品',
-    area: 'kanto',
-    url: 'https://www.sej.co.jp/cmp/index.html',
-    startDate: '2025/01/21',
-    endDate: '2025/01/27',
-    scheduleLabel: '週替わり',
-    products: ['チルドカップ麺 辛旨系'],
-    aiAnalyzed: false,
-  },
-  {
-    id: 5,
-    type: 'other',
-    title: 'nanacoポイント5倍キャンペーン 対象カテゴリ購入で',
-    area: 'all',
-    url: 'https://www.sej.co.jp/cmp/index.html',
-    startDate: '2025/01/15',
-    endDate: '2025/02/15',
-    scheduleLabel: '期間限定',
-    products: ['対象カテゴリ商品'],
-    aiAnalyzed: false,
-  },
-  {
-    id: 6,
-    type: 'sale',
-    title: 'まとめ買い割引！おにぎり3個購入で50円OFF',
-    area: 'kinki',
-    url: 'https://www.sej.co.jp/cmp/index.html',
-    startDate: '2025/01/06',
-    endDate: '2025/01/19',
-    scheduleLabel: '期間限定',
-    products: ['おにぎり全品'],
-    aiAnalyzed: false,
-  },
-];
-
-let currentFilter = 'all';
-let currentArea = 'all';
-
-// ============================================================
-// RENDER
-// ============================================================
-
-function getDaysLabel(startStr, endStr) {
-  const start = parseDate(startStr);
-  const end = parseDate(endStr);
-  const dEnd = daysUntil(end);
-  const dStart = daysUntil(start);
-
-  let html = '';
-
-  if (start) {
-    html += `<span class="schedule-pill start">🟢 ${formatDate(start)} 発売</span>`;
-  }
-
-  if (start && end) {
-    html += `<span class="schedule-arrow">→</span>`;
-  }
-
-  if (end) {
-    html += `<span class="schedule-pill end">🔴 ${formatDate(end)} 終売</span>`;
-  }
-
-  // Days remaining badge
-  if (end) {
-    if (dEnd < 0) {
-      html += `<span class="days-remaining ended">終了</span>`;
-    } else if (dEnd === 0) {
-      html += `<span class="days-remaining urgent">本日最終日！</span>`;
-    } else if (dEnd <= 3) {
-      html += `<span class="days-remaining urgent">残り${dEnd}日</span>`;
-    } else if (dEnd <= 7) {
-      html += `<span class="days-remaining soon">残り${dEnd}日</span>`;
-    } else {
-      html += `<span class="days-remaining ok">残り${dEnd}日</span>`;
-    }
-  }
-
-  return html;
-}
-
-function getTypeInfo(type) {
-  const map = {
-    praitchi: { label: '🎁 プライチ', cls: 'praitchi' },
-    app: { label: '📱 アプリ限定', cls: 'app' },
-    sale: { label: '🏷️ セール', cls: 'sale' },
-    other: { label: '🌟 キャンペーン', cls: 'other' },
-  };
-  return map[type] || map.other;
-}
-
-function renderCards() {
-  const grid = document.getElementById('campaignsGrid');
-  const filtered = campaigns.filter(c => {
-    const typeOk = currentFilter === 'all' || c.type === currentFilter;
-    const areaOk = currentArea === 'all' || c.area === 'all' || c.area === currentArea;
-    return typeOk && areaOk;
-  });
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-state">
-      <div style="font-size:32px;margin-bottom:8px">📭</div>
-      <div>該当するキャンペーンがありません</div>
-    </div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(c => {
-    const info = getTypeInfo(c.type);
-    const areaLabel = getAreaLabel(c.area);
-    const schedHtml = getDaysLabel(c.startDate, c.endDate);
-
-    return `
-    <div class="campaign-card" id="card-${c.id}">
-      <div class="card-top">
-        <div class="card-accent ${info.cls}"></div>
-        <div class="card-body">
-          <div class="card-badges">
-            <span class="badge ${info.cls}">${info.label}</span>
-            ${c.scheduleLabel ? `<span class="badge other">${c.scheduleLabel}</span>` : ''}
-          </div>
-          <div class="card-title">${c.title}</div>
-          <div class="card-schedule">${schedHtml}</div>
-        </div>
-      </div>
-      <div id="ai-inline-${c.id}" class="card-ai-result"></div>
-      <div class="card-footer">
-        <span class="card-area">📍 ${areaLabel}</span>
-        <div class="card-actions">
-          <button class="card-ai-btn" id="ai-btn-${c.id}" onclick="analyzeCard(${c.id})">✨ AI詳細</button>
-          <a class="card-link" href="${c.url}" target="_blank">詳細 →</a>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function getAreaLabel(area) {
-  const map = {
-    all: '全国', hokkaido: '北海道', tohoku: '東北',
-    kanto: '関東', koshinetsu: '甲信越・北陸',
-    tokai: '東海', kinki: '近畿', chugoku: '中国・四国',
-    kyushu: '九州・沖縄',
-  };
-  return map[area] || '全国';
-}
-
-// ============================================================
-// FILTER
-// ============================================================
-
-function setFilter(f, el) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  renderCards();
-}
-
-document.getElementById('areaSelect').addEventListener('change', function() {
-  currentArea = this.value;
-  renderCards();
-});
-
-// ============================================================
-// AI ANALYZE - URL panel
-// ============================================================
-
-async function analyzeUrl() {
-  const url = document.getElementById('aiUrlInput').value.trim();
-  if (!url) { showToast('URLを入力してください'); return; }
-
-  const btn = document.getElementById('aiAnalyzeBtn');
-  const resultEl = document.getElementById('aiResult');
-  btn.disabled = true;
-  btn.textContent = '解析中...';
-  resultEl.classList.remove('visible');
-
-  try {
-    const prompt = `あなたはコンビニキャンペーン情報の専門家です。
-以下のURLのセブンイレブンキャンペーンについて、情報を推定・解析してください。
-
-URL: ${url}
-
-以下のJSON形式のみで回答してください（他のテキスト不要）:
-{
-  "title": "キャンペーン名",
-  "type": "praitchi|app|sale|other のいずれか",
-  "startDate": "YYYY/MM/DD または null",
-  "endDate": "YYYY/MM/DD または null",
-  "scheduleNote": "週替わり・火水曜限定など",
-  "targetProducts": ["商品1", "商品2"],
-  "discount": "割引内容（例: 50円OFF、20%OFF）または null",
-  "area": "全国 または 特定エリア名",
-  "summary": "2〜3文でキャンペーンの要点をまとめた説明"
-}
-
-URLパターンから推定可能な情報を最大限活用し、不明な場合はnullを返してください。`;
-
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    const data = await resp.json();
-    const text = data.content.map(b => b.text || '').join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    const info = JSON.parse(clean);
-
-    // Render result
-    document.getElementById('aiResultTitle').textContent = info.title || '解析結果';
-
-    const grid = document.getElementById('aiDetailGrid');
-    const items = [
-      { label: '発売開始', value: info.startDate || '不明', cls: 'green' },
-      { label: '終売日', value: info.endDate || '不明', cls: 'red' },
-      { label: '割引内容', value: info.discount || '要確認', cls: 'orange' },
-      { label: 'スケジュール', value: info.scheduleNote || '－', cls: '' },
-    ];
-    grid.innerHTML = items.map(i => `
-      <div class="ai-detail-item">
-        <div class="ai-detail-label">${i.label}</div>
-        <div class="ai-detail-value ${i.cls}">${i.value}</div>
-      </div>
-    `).join('');
-
-    document.getElementById('aiSummaryText').textContent = info.summary || '';
-
-    const prodSec = document.getElementById('aiProductsSection');
-    if (info.targetProducts && info.targetProducts.length > 0) {
-      document.getElementById('aiProductTags').innerHTML =
-        info.targetProducts.map(p => `<span class="ai-product-tag">${p}</span>`).join('');
-      prodSec.style.display = 'block';
-    } else {
-      prodSec.style.display = 'none';
-    }
-
-    resultEl.classList.add('visible');
-
-  } catch(e) {
-    showToast('解析に失敗しました。再度お試しください。');
-    console.error(e);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '解析';
-  }
-}
-
-// ============================================================
-// AI ANALYZE - inline card
-// ============================================================
-
-async function analyzeCard(id) {
-  const c = campaigns.find(x => x.id === id);
-  if (!c) return;
-
-  const btn = document.getElementById(`ai-btn-${id}`);
-  const resultEl = document.getElementById(`ai-inline-${id}`);
-
-  // Toggle off if already visible
-  if (resultEl.classList.contains('visible') && !btn.classList.contains('analyzing')) {
-    resultEl.classList.remove('visible');
-    btn.textContent = '✨ AI詳細';
-    return;
-  }
-
-  if (btn.classList.contains('analyzing')) return;
-
-  btn.classList.add('analyzing');
-  btn.textContent = '解析中...';
-  resultEl.innerHTML = `<div style="color:#999;font-size:12px"><span class="spinner"></span>AIが解析中...</div>`;
-  resultEl.classList.add('visible');
-
-  try {
-    const prompt = `あなたはコンビニキャンペーン情報の専門家です。
-以下のセブンイレブンキャンペーンについて詳細を解析してください。
-
-タイトル: ${c.title}
-種別: ${c.type}
-URL: ${c.url}
-現在の発売日: ${c.startDate || '不明'}
-現在の終売日: ${c.endDate || '不明'}
-
-以下のJSON形式のみで回答（他テキスト不要）:
-{
-  "enrichedStartDate": "YYYY/MM/DD または null",
-  "enrichedEndDate": "YYYY/MM/DD または null",
-  "discount": "割引内容または null",
-  "targetProducts": ["商品1", "商品2"],
-  "howToUse": "利用方法の簡潔な説明",
-  "caution": "注意事項（あれば）または null",
-  "summary": "このキャンペーンの要点を1〜2文で"
-}`;
-
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 800,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    const data = await resp.json();
-    const text = data.content.map(b => b.text || '').join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    const info = JSON.parse(clean);
-
-    // Update card schedule if AI provided better dates
-    if (info.enrichedStartDate && !c.startDate) c.startDate = info.enrichedStartDate;
-    if (info.enrichedEndDate && !c.endDate) c.endDate = info.enrichedEndDate;
-
-    const tagsHtml = (info.targetProducts || [])
-      .map(p => `<span class="ai-product-tag">${p}</span>`).join('');
-
-    resultEl.innerHTML = `
-      <div class="card-ai-result-grid">
-        <div class="car-item">
-          <div class="car-label">割引内容</div>
-          <div class="car-value orange">${info.discount || '要確認'}</div>
-        </div>
-        <div class="car-item">
-          <div class="car-label">利用方法</div>
-          <div class="car-value">${info.howToUse || '－'}</div>
-        </div>
-        ${info.caution ? `
-        <div class="car-item" style="grid-column:1/-1">
-          <div class="car-label">⚠️ 注意事項</div>
-          <div class="car-value red">${info.caution}</div>
-        </div>` : ''}
-      </div>
-      ${tagsHtml ? `<div style="margin-bottom:6px">${tagsHtml}</div>` : ''}
-      <div class="card-ai-summary">✨ ${info.summary || ''}</div>
-    `;
-
-    btn.textContent = '▲ 閉じる';
-
-  } catch(e) {
-    resultEl.innerHTML = `<div style="color:#c00;font-size:12px">解析に失敗しました</div>`;
-    btn.textContent = '✨ AI詳細';
-    console.error(e);
-  } finally {
-    btn.classList.remove('analyzing');
-  }
-}
-
-// ============================================================
-// TOAST
-// ============================================================
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// ============================================================
-// INIT
-// ============================================================
-
-// Simulate async data load
-setTimeout(() => {
-  renderCards();
-}, 600);
-</script>
-
+    </main>
+
+    <script>
+        const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx3ulJwQE-54Kj7xrSiLFirjlrgIm53cfRNcbloxxwLarWLiCoDaznQk7fWGxcWVo-m/exec';
+
+        const categoryColors = { puraichi: '#ff3b30', app: '#ff9500', sale: '#ff2d55', other: '#007aff' };
+        const categories = {
+            puraichi: { label: 'プライチ', class: 'puraichi' },
+            app: { label: 'アプリ限定', class: 'app' },
+            sale: { label: 'セール', class: 'sale' },
+            other: { label: 'キャンペーン・他', class: 'other' }
+        };
+
+        const regionUrls = {
+            all: { this: "https://www.sej.co.jp/products/a/thisweek/", next: "https://www.sej.co.jp/products/a/nextweek/" },
+            hokkaido: { this: "https://www.sej.co.jp/products/a/thisweek/area/hokkaido/", next: "https://www.sej.co.jp/products/a/nextweek/area/hokkaido/" },
+            tohoku: { this: "https://www.sej.co.jp/products/a/thisweek/area/tohoku/", next: "https://www.sej.co.jp/products/a/nextweek/area/tohoku/" },
+            kanto: { this: "https://www.sej.co.jp/products/a/thisweek/area/kanto/", next: "https://www.sej.co.jp/products/a/nextweek/area/kanto/" },
+            koshinetsu: { this: "https://www.sej.co.jp/products/a/thisweek/area/koshinetsu/", next: "https://www.sej.co.jp/products/a/nextweek/area/koshinetsu/" },
+            tokai: { this: "https://www.sej.co.jp/products/a/thisweek/area/tokai/", next: "https://www.sej.co.jp/products/a/nextweek/area/tokai/" },
+            kinki: { this: "https://www.sej.co.jp/products/a/thisweek/area/kinki/", next: "https://www.sej.co.jp/products/a/nextweek/area/kinki/" },
+            chugoku: { this: "https://www.sej.co.jp/products/a/thisweek/area/chugoku/", next: "https://www.sej.co.jp/products/a/nextweek/area/chugoku/" },
+            kyushu: { this: "https://www.sej.co.jp/products/a/thisweek/area/kyushu/", next: "https://www.sej.co.jp/products/a/nextweek/area/kyushu/" }
+        };
+
+        const regionKeywords = {
+            all: [],
+            hokkaido: ['北海道'],
+            tohoku: ['東北', '青森', '岩手', '宮城', '秋田', '山形', '福島'],
+            kanto: ['関東', '茨城', '栃木', '群馬', '埼玉', '千葉', '東京', '神奈川'],
+            koshinetsu: ['甲信越', '北陸', '新潟', '富山', '石川', '福井', '山梨', '長野'],
+            tokai: ['東海', '岐阜', '静岡', '愛知', '三重'],
+            kinki: ['近畿', '関西', '滋賀', '京都', '大阪', '兵庫', '奈良', '和歌山'],
+            chugoku: ['中国', '四国', '鳥取', '島根', '岡山', '広島', '山口', '徳島', '香川', '愛媛', '高知'],
+            kyushu: ['九州', '沖縄', '福岡', '佐賀', '長崎', '熊本', '大分', '宮崎', '鹿児島']
+        };
+
+        let allCampaigns = []; 
+        let currentFilter = 'all'; 
+        let calendar; 
+
+        const gridEl = document.getElementById('campaign-grid');
+        const calEl = document.getElementById('calendar-view');
+        const statusEl = document.getElementById('status-message');
+        const regionSelect = document.getElementById('region-select');
+
+        init();
+
+        function init() {
+            fetchData();
+            updateDashboard(); 
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.getAttribute('data-filter');
+                    
+                    if (calEl.style.display === 'block') renderCalendar();
+                    else renderCampaigns();
+                });
+            });
+
+            regionSelect.addEventListener('change', function() {
+                updateDashboard();
+                if (calEl.style.display === 'block') {
+                    renderCalendar();
+                } else {
+                    renderCampaigns(); 
+                }
+            });
+        }
+
+        function updateDashboard() {
+            try {
+                const selectedRegion = regionSelect.value;
+                const linkData = regionUrls[selectedRegion];
+                
+                let regionName = regionSelect.options[regionSelect.selectedIndex].text.split('（')[0];
+                if (regionName === '全国の情報を表示') regionName = '全国';
+                
+                document.getElementById('link-this-week').href = linkData.this;
+                document.getElementById('link-next-week').href = linkData.next;
+                
+                document.getElementById('label-this').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
+                document.getElementById('label-next').innerText = regionName + (regionName === '全国' ? '' : 'エリア');
+            } catch (e) {
+                console.error('Update Error:', e);
+            }
+        }
+
+        function switchView(view) {
+            document.getElementById('btn-list').classList.toggle('active', view === 'list');
+            document.getElementById('btn-cal').classList.toggle('active', view === 'calendar');
+            
+            if (view === 'list') {
+                calEl.style.display = 'none'; gridEl.style.display = 'grid'; renderCampaigns();
+            } else {
+                gridEl.style.display = 'none'; calEl.style.display = 'block'; renderCalendar();
+            }
+        }
+
+        function extractProductName(text) {
+            const matches = text.match(/「(.+?)」/g);
+            return matches ? matches.map(m => m.replace(/[「」]/g, '')).join(' / ') : null;
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch(GAS_API_URL);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.data) {
+                    allCampaigns = data.data;
+                    statusEl.style.display = 'none';
+                    renderCampaigns();
+                } else {
+                    statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="font-size:32px; margin-bottom:12px; display:block;"></i>データの取得に失敗しました。';
+                }
+            } catch (error) {
+                statusEl.innerHTML = '<i class="fa-solid fa-wifi" style="font-size:32px; margin-bottom:12px; display:block;"></i>通信エラーが発生しました。';
+            }
+        }
+
+        function getFilteredData() {
+            let data = currentFilter === 'all' ? allCampaigns : allCampaigns.filter(item => item.category === currentFilter);
+            
+            const selectedRegion = regionSelect.value;
+            if (selectedRegion !== 'all') {
+                const keywords = regionKeywords[selectedRegion];
+                data = data.filter(item => {
+                    if (!item.region) return true;
+                    return keywords.some(kw => item.region.includes(kw));
+                });
+            }
+            return data;
+        }
+
+        function renderCalendar() {
+            if (!calendar) {
+                calendar = new FullCalendar.Calendar(calEl, {
+                    initialView: 'dayGridMonth', locale: 'ja', height: 'auto',
+                    headerToolbar: { left: 'prev,next', center: 'title', right: 'today' },
+                    eventClick: function(info) { window.open(info.event.url, '_blank'); info.jsEvent.preventDefault(); }
+                });
+                calendar.render();
+            }
+            calendar.removeAllEvents();
+            
+            const filteredData = getFilteredData();
+            
+            filteredData.forEach(item => {
+                if (item.startDate) { 
+                    calendar.addEvent({
+                        title: item.title, start: item.startDate, end: item.endDate,
+                        url: item.url, backgroundColor: categoryColors[item.category] || categoryColors.other
+                    });
+                }
+            });
+        }
+
+        function renderCampaigns() {
+            gridEl.innerHTML = ''; 
+            const filteredItems = getFilteredData();
+
+            if (filteredItems.length === 0) {
+                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8e8e93; padding: 60px;"><i class="fa-solid fa-inbox" style="font-size:40px; margin-bottom:16px; opacity:0.3;"></i><br>このエリアに該当するキャンペーンはありません。</div>';
+                return;
+            }
+            
+            filteredItems.forEach(item => {
+                const catInfo = categories[item.category] || categories.other;
+                const extractedProduct = extractProductName(item.title);
+                const productHtml = extractedProduct ? `<div class="product-highlight"><i class="fa-solid fa-box-open"></i> ${extractedProduct}</div>` : '';
+                const regionHtml = item.region ? `<span class="badge region"><i class="fa-solid fa-location-dot"></i> ${item.region}限定</span>` : '';
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-content">
+                        <div class="badges-wrapper">
+                            <span class="badge ${catInfo.class}">${catInfo.label}</span>
+                            ${regionHtml}
+                        </div>
+                        ${productHtml}
+                        <h3 class="card-title">${item.title}</h3>
+                        <div class="card-date"><i class="fa-regular fa-clock"></i> ${item.date}</div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="${item.url}" target="_blank" class="official-link">公式サイトで見る <i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                `;
+                gridEl.appendChild(card);
+            });
+        }
+    </script>
 </body>
 </html>
